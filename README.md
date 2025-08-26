@@ -1,6 +1,6 @@
 # MAML
 
-MAML is a YAML based metadata format. This package is a simple R interface to help create, read and write MAML files.
+MAML is a YAML based metadata format for tabular data. This package is a simple R interface to help create, read and write MAML files.
 
 ### Installation
 
@@ -84,3 +84,29 @@ fields:
   ucd: 
   data_type: double
 ```
+
+## MAML Metadata Format
+
+The MAML metadata format is a structured way to describe datasets, surveys, and tables using YAML. This format ensures that all necessary information about the data is captured in a clear and organized manner.
+
+### Structure
+
+* survey: The name of the survey. [recommended]
+* dataset: The name of the dataset. [recommended]
+* table: The name of the table. [required]
+* version: The version of the dataset. [required]
+* date: The date of the dataset in YYYY-MM-DD format. [required]
+* author: The lead author of the dataset, including their email. [required]
+* coauthors: A list of co-authors, each with their email. [optional]
+* depend: A list of datasets that this dataset depends on. [optional]
+* comment: A list of comments or interesting facts about the data. [optional]
+* fields: A list of fields in the dataset, each with the following attributes: [required]
+  - name: The name of the field. [required]
+  - unit: The unit of measurement for the field (if applicable). [recommended]
+  - description: A description of the field. [recommended]
+  - ucd: Unified Content Descriptor for IVOA. [recommended]
+  - data_type: The data type of the field (e.g., int32, string, bool, double). [required]
+
+This metadata format can be used to document datasets in a standardised way, making it easier to understand and share data within the research community. By following this format, you ensure that all relevant information about the dataset is captured and easily accessible.
+
+This format contains the superset of metadata requirements for IVOA, Data Central and surveys like GAMA and WAVES.
