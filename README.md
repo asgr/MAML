@@ -28,6 +28,7 @@ cat(make_MAML(df))
 
 Will create the following output:
 
+```yaml
 survey: Survey Name
 dataset: dataset Name
 table: Table Name
@@ -79,3 +80,4 @@ fields:
   description: 
   ucd: 
   data_type: double
+```
