@@ -1,7 +1,7 @@
 - pattern: ID
   match_by: suffix
   ignore_case: FALSE
-  ucd: [meta.id, something.epoch]
+  ucd: meta.id
 - pattern: RA
   match_by: prefix
   ignore_case: FALSE
@@ -23,8 +23,8 @@
 - pattern: date
   match_by: prefix
   ignore_case: TRUE
-  ucd: time
+  ucd: [time, obs.exposure]
 - pattern: time
   match_by: prefix
   ignore_case: FALSE
-  ucd: time
+  ucd: [time, obs.exposure]

@@ -19,23 +19,32 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
             match_by = 'any'
           }
 
+          if(match_by == 'any' | match_by == 'all'){pattern = pattern}
+          if(match_by == 'exact'){pattern = paste0('^', pattern, '$')}
+          if(match_by == 'prefix'){pattern = paste0('^', pattern)}
+          if(match_by == 'suffix'){pattern = paste0(pattern, '$')}
+          if(match_by == 'both'){pattern = paste0('^', pattern,'|', pattern, '$')}
+          
           if(is.null(lookup[[j]]$ignore_case)){
             ignore = FALSE
           }else{
             ignore = lookup[[j]]$ignore_case
           }
 
-          if(match_by == 'prefix'){pattern = paste0('^', pattern)}
-          if(match_by == 'suffix'){pattern = paste0(pattern, '$')}
-          if(match_by == 'both'){pattern = paste0('^',pattern,'|', pattern, '$')}
-
           check = grepl(pattern, col_names[i], ignore.case=ignore)
 
           if(check){
-            unit = lookup[[j]]$unit
-            description = lookup[[j]]$description
+            if(is.null(unit) & !is.null(lookup[[j]]$unit)){
+              #Take the first unit that matches (adding more don't make sense)
+              unit = lookup[[j]]$unit
+            }
+            if(!is.null(lookup[[j]]$description)){
+              #Concat descriptions together (space sep):
+              description = paste(c(description, lookup[[j]]$description), collapse=' ')
+            }
             if(!is.null(lookup[[j]]$ucd)){
-              ucd = paste(lookup[[j]]$ucd, collapse=';')
+              #Concat ucd together:
+              ucd = paste(c(ucd,lookup[[j]]$ucd), collapse=';')
             }
           }
         }
