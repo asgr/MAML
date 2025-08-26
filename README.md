@@ -2,7 +2,7 @@
 
 MAML is a YAML based metadata format. This package is a simple R interface to help create, read and write MAML files.
 
-## Installation
+### Installation
 
 To install the necessary dependencies, run:
 
@@ -10,6 +10,9 @@ To install the necessary dependencies, run:
 install.packages("remotes")
 remotes::install_github("asgr/MAML")
 ```
+
+### Usage
+
 A simple example using a toy table we want to create MAML metedata from:
 
 ```r
