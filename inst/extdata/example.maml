@@ -1,0 +1,51 @@
+survey: Survey Name
+dataset: dataset Name
+table: Table Name
+version: '0.0'
+date: '2025-08-26'
+author: Lead Author <email>
+coauthors:
+- Co-Author 1 <email1>
+- Co-Author 2 <email2>
+depend:
+- Dataset 1 this depends on [optional]
+- Dataset 2 this depends on [optional]
+comment:
+- Something interesting about the data [optional]
+- Something else [optional]
+fields:
+- name: ID
+  unit: 
+  description: 
+  ucd: 
+  data_type: int32
+- name: Name
+  unit: 
+  description: 
+  ucd: 
+  data_type: string
+- name: Date
+  unit: 
+  description: 
+  ucd: 
+  data_type: string
+- name: Flag
+  unit: 
+  description: 
+  ucd: 
+  data_type: bool
+- name: RA
+  unit: 
+  description: 
+  ucd: 
+  data_type: double
+- name: Dec
+  unit: 
+  description: 
+  ucd: 
+  data_type: double
+- name: Mag
+  unit: 
+  description: 
+  ucd: 
+  data_type: double

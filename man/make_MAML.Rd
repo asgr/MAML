@@ -1,0 +1,84 @@
+\name{make_MAML}
+\alias{make_MAML}
+\title{Generate Metadata YAML}
+\description{
+  Creates a metadata structure (MAML) based on the columns and types of a given data.frame, Parquet file or Arrow Dataset.
+  Optionally returns the metadata as a YAML string, which is the MAML file format.
+}
+\usage{
+make_MAML(data, output = 'YAML', input = 'table', dataset = 'dataset', lookup = NULL, ...)
+}
+\arguments{
+  \item{data}{
+\code{data.frame}, \code{tibble} or Arrow Dataset containing the table or meta data to describe.
+}
+  \item{input}{
+Character scalar; input type. Allowed are 'table' (a 2D view of the data table) or 'meta' (a data.frame view of fields meta data, see Examples).
+}
+  \item{output}{
+Character scalar; output type. If \code{YAML} or \code{MAML}, returns the metadata as a YAML-formatted string. If \code{list}, returns a named list.
+}
+  \item{dataset}{
+Character scalar. The schema name for a dataset (e.g. 'DMU' for GAMA and 'RIP' for WAVES).
+}
+  \item{lookup}{
+List; optional lookup matching list to create default entries in the MAML. See Examples.
+}
+  \item{\dots}{
+Modify default entries (see Examples).
+}
+}
+\details{
+  This function inspects the schema of the input data using the \code{arrow} package (if available),
+  and constructs a metadata header including dataset name, version, authorship, dependencies, and
+  a description of each field. Field types are inferred either from the \code{arrow::schema()} or
+  from base R classes.
+
+  The resulting metadata is suitable for use in data documentation, archiving, or interoperability
+  with systems that consume YAML metadata.
+}
+\value{
+  A character string containing YAML-formatted metadata if \code{yaml_out = TRUE}, otherwise a named list.
+}
+\author{
+  Aaron Robotham
+}
+\seealso{
+  \code{\link{read_MAML}}, \code{\link{write_MAML}}, \code{\link[yaml]{as.yaml}}, \code{\link[arrow]{schema}}
+}
+\examples{
+df = data.frame(
+  ID = 1:5,
+  Name = c("A", "B", "C", "D", "E"),
+  Date = c("2025-08-26", "2025-07-22", "2025-09-03", "2025-06-13", "2025-07-26"),
+  Flag = c(TRUE, FALSE, TRUE, TRUE, FALSE),
+  RA = c(45.1, 47.2, 43.1, 48.9, 45.5),
+  Dec = c(3.5, 2.8, 1.2, 2.9, 1.8),
+  Mag = c(20.5, 20.3, 15.2, 18.8, 22.1)
+)
+
+cat(make_MAML(df))
+cat(make_MAML(df, dataset = 'RIP'))
+cat(make_MAML(df, dataset = 'RIP', RIP = 'GroupFinding'))
+cat(make_MAML(df, table = 'Example Name'))
+cat(make_MAML(df, table = 'Example Name', comment = NULL)) #delete comment field
+cat(make_MAML(df, table = 'Example Name', comment = list('Comment 1', 'Comment 2')))
+
+ds = open_dataset(system.file('extdata', 'example.parquet', package = "MAML"))
+
+cat(make_MAML(ds))
+
+#The data.frame view of the fields meta data:
+meta = rbindlist(make_MAML(df, output='list')$fields)
+print(meta)
+
+#Convert back to the YAML format:
+cat(make_MAML(meta, input = 'meta'))
+
+#load lookup to fill in more data automatically:
+lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
+#this is what the file looks like
+cat(as.yaml(lookup))
+
+cat(make_MAML(df, lookup=lookup))
+}
