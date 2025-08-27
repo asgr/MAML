@@ -2,6 +2,22 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
 
   i = j = NULL
 
+  foreach(j = 1:length(lookup))%do%{
+    match_by = lookup[[j]]$match_by
+
+    if(is.null(match_by)){
+      match_by = 'any'
+    }
+
+    pattern = lookup[[j]]$pattern
+
+    if(match_by == 'any' | match_by == 'all'){NULL}#do nothing
+    if(match_by == 'exact'){lookup[[j]]$pattern = paste0('^',pattern , '$')}
+    if(match_by == 'prefix'){lookup[[j]]$pattern = paste0('^', pattern)}
+    if(match_by == 'suffix'){lookup[[j]]$pattern = paste0(pattern, '$')}
+    if(match_by == 'both'){lookup[[j]]$pattern = paste0('^', pattern,'|', pattern, '$')}
+  }
+
   if(input == 'table'){
     temp_schema = arrow::schema(data)$fields
     col_names = names(data)
@@ -12,26 +28,7 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
 
       if(!is.null(lookup)){
         foreach(j = 1:length(lookup))%do%{
-          pattern = lookup[[j]]$pattern
-          match_by = lookup[[j]]$match_by
-
-          if(is.null(match_by)){
-            match_by = 'any'
-          }
-
-          if(match_by == 'any' | match_by == 'all'){pattern = pattern}
-          if(match_by == 'exact'){pattern = paste0('^', pattern, '$')}
-          if(match_by == 'prefix'){pattern = paste0('^', pattern)}
-          if(match_by == 'suffix'){pattern = paste0(pattern, '$')}
-          if(match_by == 'both'){pattern = paste0('^', pattern,'|', pattern, '$')}
-          
-          if(is.null(lookup[[j]]$ignore_case)){
-            ignore = FALSE
-          }else{
-            ignore = lookup[[j]]$ignore_case
-          }
-
-          check = grepl(pattern, col_names[i], ignore.case=ignore)
+          check = grepl(lookup[[j]]$pattern, col_names[i], ignore.case = isTRUE(lookup[[j]]$ignore_case))
 
           if(check){
             if(is.null(unit) & !is.null(lookup[[j]]$unit)){
