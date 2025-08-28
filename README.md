@@ -52,7 +52,7 @@ Will create the following output:
 
 ```yaml
 survey: Survey Name
-dataset: dataset Name
+dataset: Dataset Name
 table: Table Name
 version: '0.0'
 date: '2025-08-26'
@@ -189,7 +189,7 @@ This now populates our MAML with more information:
 
 ```yaml
 survey: Survey Name
-dataset: dataset Name
+dataset: Dataset Name
 table: Table Name
 version: '0.0'
 date: '2025-08-26'
@@ -277,7 +277,7 @@ This now populates our MAML with more information:
 
 ```yaml
 survey: Survey Name
-dataset: dataset Name
+dataset: Dataset Name
 table: Table Name
 version: '0.0'
 date: '2025-08-28'

@@ -6,8 +6,7 @@
   Optionally returns the metadata as a YAML string, which is the MAML file format.
 }
 \usage{
-make_MAML(data, output = 'YAML', input = 'table', dataset = 'dataset', lookup = NULL,
-  datamap = NULL, ...)
+make_MAML(data, output = 'YAML', input = 'table', lookup = NULL, datamap = NULL, ...)
 }
 \arguments{
   \item{data}{
@@ -18,9 +17,6 @@ Character scalar; input type. Allowed are 'table' (a 2D view of the data table) 
 }
   \item{output}{
 Character scalar; output type. If \code{YAML} or \code{MAML}, returns the metadata as a YAML-formatted string. If \code{list}, returns a named list.
-}
-  \item{dataset}{
-Character scalar. The schema name for a dataset (e.g. 'DMU' for GAMA and 'RIP' for WAVES).
 }
   \item{lookup}{
 List; optional lookup matching list to create default entries in the MAML. See Examples.

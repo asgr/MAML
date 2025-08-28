@@ -1,4 +1,4 @@
-make_MAML = function(data, output='YAML', input='table', dataset='dataset', lookup=NULL, datamap=NULL, ...){
+make_MAML = function(data, output='YAML', input='table', lookup=NULL, datamap=NULL, ...){
 
   i = j = NULL
 
@@ -101,9 +101,6 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
     ),
     fields = fields
   )
-
-  names(header)[2] = dataset
-  header[[2]] = paste(dataset,'Name')
 
   dots = list(...)
 
