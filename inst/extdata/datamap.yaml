@@ -1,6 +1,6 @@
-- input: [int8, int16, i8, i16]
+- input: [short, int8, int16, i8, i16]
   output: int16
-- input: [int, integer, short, long, int32, i32]
+- input: [long, int, integer, int32, i32]
   output: int32
 - input: [longlong, int64, i64]
   output: int64
