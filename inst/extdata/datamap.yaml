@@ -1,0 +1,16 @@
+- input: [int8, int16, i8, i16]
+  output: int16
+- input: [int, integer, short, long, int32, i32]
+  output: int32
+- input: [longlong, int64, i64]
+  output: int64
+- input: [single, float, float16, float32, f32]
+  output: float32
+- input: [double, numeric, float64, f64]
+  output: float64
+- input: [char, character, string, str, utf8, utf16, utf32, utf64]
+  output: string
+- input: [bit, binary, bool, boolean, logical, flag]
+  output: boolean
+- input: [byte, uint8, uint16, uint32, uint64, u8, u16, u32, u64, int94, uint94]
+  output: error
