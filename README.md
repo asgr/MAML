@@ -132,7 +132,7 @@ This metadata format can be used to document datasets in a standardised way, mak
 
 This format contains the superset of metadata requirements for IVOA, Data Central and surveys like GAMA and WAVES.
 
-## Lookup Autofill
+### Lookup Autofill
 
 To make life easier with auto-populating the MAML you can use a look up dictionary (itself a YAML file). An example looks like this:
 
@@ -178,7 +178,7 @@ Here the entries have the following meaning:
 * unit: Unit to use based on successful column name match (only first match is used). [optional]
 * description: Description to add (' ' separator) based on successful column name match. [optional]
 
-To use the above lookup YAML we can run:
+To use the above example lookup YAML we can run:
 
 ```r
 lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
@@ -240,3 +240,93 @@ fields:
   ucd: phot.mag
   data_type: double
 ```
+
+### Datamap Autofill
+
+It is also useful to be able to standardise the column types our data might have to the range of data types supported on a particular system (say a MySQL or Postgres database). For this reason we also define an optional datatype mapping YAML that should look something like the below:
+
+```yaml
+- input: [short, int8, int16, i8, i16]
+  output: int16
+- input: [long, int, integer, int32, i32]
+  output: int32
+- input: [longlong, int64, i64]
+  output: int64
+- input: [single, float, float16, float32, f32]
+  output: float32
+- input: [double, numeric, float64, f64]
+  output: float64
+- input: [char, character, string, str, utf8, utf16, utf32, utf64]
+  output: string
+- input: [bit, binary, bool, boolean, logical, flag]
+  output: boolean
+- input: [byte, uint8, uint16, uint32, uint64, u8, u16, u32, u64, int94, uint94]
+  output: error
+```
+
+Here the vector of possible inputs must always map onto a unique output. Any input and output should only appear once in this list. If an input maps to 'error' then the code will stop and return an error (since the datatype is not trivial to map to one of the desired outputs).
+
+To use the above example datatype mapping YAML we can run:
+
+```r
+datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
+cat(make_MAML(df, datamap=datamap))
+```
+
+This now populates our MAML with more information:
+
+```yaml
+survey: Survey Name
+dataset: dataset Name
+table: Table Name
+version: '0.0'
+date: '2025-08-28'
+author: Lead Author <email>
+coauthors:
+- Co-Author 1 <email1>
+- Co-Author 2 <email2>
+depend:
+- Dataset 1 this depends on [optional]
+- Dataset 2 this depends on [optional]
+comment:
+- Something interesting about the data [optional]
+- Something else [optional]
+fields:
+- name: ID
+  unit: 
+  description: 
+  ucd: 
+  data_type: int32
+- name: Name
+  unit: 
+  description: 
+  ucd: 
+  data_type: string
+- name: Date
+  unit: 
+  description: 
+  ucd: 
+  data_type: string
+- name: Flag
+  unit: 
+  description: 
+  ucd: 
+  data_type: boolean
+- name: RA
+  unit: 
+  description: 
+  ucd: 
+  data_type: float64
+- name: Dec
+  unit: 
+  description: 
+  ucd: 
+  data_type: float64
+- name: Mag
+  unit: 
+  description: 
+  ucd: 
+  data_type: float64
+```
+
+Notice how the data_type entries have been updated to reflect the desired mapping.
