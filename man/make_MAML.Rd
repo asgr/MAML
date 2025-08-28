@@ -6,7 +6,8 @@
   Optionally returns the metadata as a YAML string, which is the MAML file format.
 }
 \usage{
-make_MAML(data, output = 'YAML', input = 'table', dataset = 'dataset', lookup = NULL, ...)
+make_MAML(data, output = 'YAML', input = 'table', dataset = 'dataset', lookup = NULL,
+  datamap = NULL, ...)
 }
 \arguments{
   \item{data}{
@@ -23,6 +24,9 @@ Character scalar. The schema name for a dataset (e.g. 'DMU' for GAMA and 'RIP' f
 }
   \item{lookup}{
 List; optional lookup matching list to create default entries in the MAML. See Examples.
+}
+  \item{datamap}{
+List; optional data type matching list. See Examples.
 }
   \item{\dots}{
 Modify default entries (see Examples).
@@ -81,4 +85,11 @@ lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
 cat(as.yaml(lookup))
 
 cat(make_MAML(df, lookup=lookup))
+
+#load datamap to target a set of datatypes:
+datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
+#this is what the file looks like
+cat(as.yaml(datamap))
+
+cat(make_MAML(df, datamap=datamap))
 }
