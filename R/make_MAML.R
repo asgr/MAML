@@ -1,4 +1,4 @@
-make_MAML = function(data, output='YAML', input='table', dataset='dataset', lookup=NULL, ...){
+make_MAML = function(data, output='YAML', input='table', dataset='dataset', lookup=NULL, datamap=NULL, ...){
 
   i = j = NULL
 
@@ -26,6 +26,16 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
       description = NULL
       ucd = NULL
 
+      data_type = if(is.null(temp_schema)){
+        class(data[[i]])
+      }else{
+        temp_schema[[i]]$type$ToString()
+      }
+
+      if(!is.null(datamap)){
+        data_type = .dataype_map(data_type, datamap)
+      }
+
       if(!is.null(lookup)){
         foreach(j = 1:length(lookup))%do%{
           check = grepl(lookup[[j]]$pattern, col_names[i], ignore.case = isTRUE(lookup[[j]]$ignore_case))
@@ -52,17 +62,7 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
         unit = unit,
         description = description,
         ucd = ucd,
-        data_type = if(is.null(temp_schema)){
-          switch(class(data[[i]])[1],
-                 integer = "int32",
-                 integer64 = "int64",
-                 numeric = "double",
-                 character = "string",
-                 logical = 'bool',
-                 "char")
-        }else{
-          temp_schema[[i]]$type$ToString()
-        }
+        data_type = data_type
       )
     }
   }else if(input == 'meta'){
@@ -120,4 +120,11 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
   }
 
   return(header)
+}
+
+.dataype_map = function(input, map){
+  output = 'missing'
+  for(check in map){
+    if(tolower(input) %in% tolower(check$input)){return(check$output)}
+  }
 }
