@@ -33,7 +33,16 @@ make_MAML = function(data, output='YAML', input='table', dataset='dataset', look
       }
 
       if(!is.null(datamap)){
-        data_type = .dataype_map(data_type, datamap)
+        temp_data_type = data_type
+        data_type = .dataype_map(temp_data_type, datamap)
+
+        if(data_type == 'error'){
+          stop('Unsupported data type: ', temp_data_type)
+        }
+
+        if(data_type == 'missing'){
+          stop('Unrecognised data type: ', temp_data_type)
+        }
       }
 
       if(!is.null(lookup)){
