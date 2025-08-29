@@ -1,6 +1,6 @@
 # MAML
 
-MAML is a YAML based metadata format for tabular data. This package is a simple R interface to help create, read and write MAML files.
+MAML is a YAML based metadata format for tabular data (roughly implying Metadata yAML). This package is a simple R interface to help create, read and write MAML files.
 
 Why MAML? We have VOTable and FITS header already?! Well, for various projects we were keen on a rich metadata format that was easy for humans and computers to both read and write. VOTable headers are very hard for humans to read and write (boo), and FITS is very restrictive with its formatting and only useful for FITS files directly. In comes YAML, a very human and machine readable and writable format. By restricting ourselves to a narrow subset of the language we can easily describe fairly complex table metadata (including all IVOA information). So this brings us to MAML: Metadata yAML (it kinda works :-P).
 
