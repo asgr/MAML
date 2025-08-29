@@ -14,21 +14,23 @@ The MAML metadata format is a structured way to describe datasets, surveys, and 
 
 The superset of allowed entries for MAML is below. Not all are required, but if present they should obey the order and naming.
 
-* survey: The name of the survey. Scalar string. [recommended]
-* dataset: The name of the dataset. Scalar string. [recommended]
-* table: The name of the table. Scalar string. [required]
-* version: The version of the dataset. Scalar string, integer or float. [required]
-* date: The date of the dataset in YYYY-MM-DD format. Scalar string. [required]
-* author: The lead author of the dataset, including their email. Scalar string. [required]
-* coauthors: A list of co-authors, each with their email. Vector string. [optional]
-* depend: A list of datasets that this dataset depends on. Vector string. [optional]
-* comment: A list of comments or interesting facts about the data. Vector string. [optional]
-* fields: A list of fields in the dataset, each with the following attributes: [required]
-  - name: The name of the field. Scalar string. [required]
-  - unit: The unit of measurement for the field (if applicable). Scalar string. [recommended]
-  - description: A description of the field. Scalar string. [recommended]
-  - ucd: Unified Content Descriptor for IVOA. Scalar string. [recommended]
-  - data_type: The data type of the field (e.g., int32, string, bool, double). Scalar string. [required]
+- **survey**: The name of the survey. *Scalar string*. **[optional]**
+- **dataset**: The name of the dataset. *Scalar string*. **[recommended]**
+- **table**: The name of the table. *Scalar string*. **[required]**
+- **version**: The version of the dataset. *Scalar string, integer or float*. **[required]**
+- **date**: The date of the dataset in `YYYY-MM-DD` format. *Scalar string*. **[required]**
+- **author**: The lead author of the dataset, including their email. *Scalar string*. **[required]**
+- **coauthors**: A list of co-authors, each with their email. *Vector string*. **[optional]**
+- **depends**: A list of datasets that this dataset depends on. *Vector string*. **[optional]**
+- **description**: A sentence or two describing the table. *Scalar string*. **[recommended]**
+- **comments**: A list of comments or interesting facts about the data. *Vector string*. **[optional]**
+- **fields**: A list of fields in the dataset, each with the following attributes: **[required]**
+  - **name**: The name of the field. *Scalar string*. **[required]**
+  - **unit**: The unit of measurement for the field (if applicable). *Scalar string*. **[recommended]**
+  - **info**: A short description of the field. *Scalar string*. **[recommended]**
+  - **ucd**: Unified Content Descriptor for IVOA (can have many). *Vector string*. **[recommended]**
+  - **data_type**: The data type of the field (e.g., `int32`, `string`, `bool`, `double`). *Scalar string*. **[required]**
+  - **array_size**: Maximum length of character strings. *Scalar integer* or *Scalar string*. **[optional]**
 
 This metadata format can be used to document datasets in a standardised way, making it easier to understand and share data within the research community. By following this format, you ensure that all relevant information about the dataset is captured and easily accessible.
 
