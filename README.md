@@ -34,6 +34,8 @@ This metadata format can be used to document datasets in a standardised way, mak
 
 This format contains the superset of metadata requirements for IVOA, Data Central and surveys like GAMA and WAVES.
 
+If producing a maximal MAML then the metadata can be considered a MAML-Whale, and if only containing the required minimum entries it would be a MAML-Mouse. Between these two extremes you can choose your mammal of interest to reflect the quality/quantity of metadata. The sweet spot is obviously a MAML-Honey-Badger.
+
 ## Usage of R MAML Package
 
 So far we have defined what MAML is and what it should look like, but you can actually make it however you like: by hand, your own code, or perhaps using a helper package like this one. To get going I would recommend the latter (see also *pymaml*) because it reduces human error.
