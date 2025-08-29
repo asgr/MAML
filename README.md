@@ -6,6 +6,38 @@ Why MAML? We have VOTable and FITS header already?! Well, for various projects w
 
 MAML format files should be saves as example.maml etc. And the idea is the yaml string can be inserted directly into a number of different file formats that accept key-value metadata (like Apache Arrow Parquet files). In the case of Parquet files they should be written to a 'maml' extension in the metadata section of the file (so something like parquet_file\$metadata\$maml in R world).
 
+## MAML Metadata Format
+
+The MAML metadata format is a structured way to describe datasets, surveys, and tables using YAML. This format ensures that all necessary information about the data is captured in a clear and organized manner.
+
+### Structure
+
+The superset of allowed entries for MAML is below. Not all are required, but if present they should obey the order and naming.
+
+* survey: The name of the survey. Scalar string. [recommended]
+* dataset: The name of the dataset. Scalar string. [recommended]
+* table: The name of the table. Scalar string. [required]
+* version: The version of the dataset. Scalar string, integer or float. [required]
+* date: The date of the dataset in YYYY-MM-DD format. Scalar string. [required]
+* author: The lead author of the dataset, including their email. Scalar string. [required]
+* coauthors: A list of co-authors, each with their email. Vector string. [optional]
+* depend: A list of datasets that this dataset depends on. Vector string. [optional]
+* comment: A list of comments or interesting facts about the data. Vector string. [optional]
+* fields: A list of fields in the dataset, each with the following attributes: [required]
+  - name: The name of the field. Scalar string. [required]
+  - unit: The unit of measurement for the field (if applicable). Scalar string. [recommended]
+  - description: A description of the field. Scalar string. [recommended]
+  - ucd: Unified Content Descriptor for IVOA. Scalar string. [recommended]
+  - data_type: The data type of the field (e.g., int32, string, bool, double). Scalar string. [required]
+
+This metadata format can be used to document datasets in a standardised way, making it easier to understand and share data within the research community. By following this format, you ensure that all relevant information about the dataset is captured and easily accessible.
+
+This format contains the superset of metadata requirements for IVOA, Data Central and surveys like GAMA and WAVES.
+
+## Usage of R MAML Package
+
+So far we have defined what MAML is and what it should look like, but you can actually make it however you like: by hand, your own code, or perhaps using a helper package like this one. To get going I would recommend the latter (see also *pymaml*) because it reduces human error.
+
 ### Installation
 
 To install the necessary dependencies, run:
@@ -15,7 +47,7 @@ install.packages("remotes")
 remotes::install_github("asgr/MAML")
 ```
 
-### Usage
+### A Simple Example 
 
 A simple example using a toy table we want to create MAML metadata from:
 
@@ -105,32 +137,6 @@ fields:
 ```
 
 Obviously there are more things a keen user will want to add on top of this, but it is a useful start.
-
-## MAML Metadata Format
-
-The MAML metadata format is a structured way to describe datasets, surveys, and tables using YAML. This format ensures that all necessary information about the data is captured in a clear and organized manner.
-
-### Structure
-
-* survey: The name of the survey. [recommended]
-* dataset: The name of the dataset. [recommended]
-* table: The name of the table. [required]
-* version: The version of the dataset. [required]
-* date: The date of the dataset in YYYY-MM-DD format. [required]
-* author: The lead author of the dataset, including their email. [required]
-* coauthors: A list of co-authors, each with their email. [optional]
-* depend: A list of datasets that this dataset depends on. [optional]
-* comment: A list of comments or interesting facts about the data. [optional]
-* fields: A list of fields in the dataset, each with the following attributes: [required]
-  - name: The name of the field. [required]
-  - unit: The unit of measurement for the field (if applicable). [recommended]
-  - description: A description of the field. [recommended]
-  - ucd: Unified Content Descriptor for IVOA. [recommended]
-  - data_type: The data type of the field (e.g., int32, string, bool, double). [required]
-
-This metadata format can be used to document datasets in a standardised way, making it easier to understand and share data within the research community. By following this format, you ensure that all relevant information about the dataset is captured and easily accessible.
-
-This format contains the superset of metadata requirements for IVOA, Data Central and surveys like GAMA and WAVES.
 
 ### Lookup Autofill
 
