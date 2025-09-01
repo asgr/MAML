@@ -59,7 +59,7 @@ make_MAML = function(data, output='YAML', input='table',
               unit = lookup[[j]]$unit
             }
             if(!is.null(lookup[[j]]$info)){
-              #Concat descriptions together (space sep):
+              #Concat info blocks together (space sep):
               info = paste(c(info, lookup[[j]]$info), collapse=' ')
             }
             if(!is.null(lookup[[j]]$ucd)){
