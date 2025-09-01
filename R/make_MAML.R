@@ -1,4 +1,6 @@
-make_MAML = function(data, output='YAML', input='table', lookup=NULL, datamap=NULL, ...){
+make_MAML = function(data, output='YAML', input='table',
+                     fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
+                     lookup=NULL, datamap=NULL, ...){
 
   i = j = NULL
 
@@ -23,8 +25,10 @@ make_MAML = function(data, output='YAML', input='table', lookup=NULL, datamap=NU
     col_names = names(data)
     fields = foreach(i = 1:dim(data)[2])%do%{
       unit = NULL
-      description = NULL
+      info = NULL
       ucd = NULL
+      array_size = NULL
+      qc = NULL
 
       data_type = if(is.null(temp_schema)){
         class(data[[i]])
@@ -54,9 +58,9 @@ make_MAML = function(data, output='YAML', input='table', lookup=NULL, datamap=NU
               #Take the first unit that matches (adding more don't make sense)
               unit = lookup[[j]]$unit
             }
-            if(!is.null(lookup[[j]]$description)){
+            if(!is.null(lookup[[j]]$info)){
               #Concat descriptions together (space sep):
-              description = paste(c(description, lookup[[j]]$description), collapse=' ')
+              info = paste(c(info, lookup[[j]]$info), collapse=' ')
             }
             if(!is.null(lookup[[j]]$ucd)){
               #Concat ucd together:
@@ -66,38 +70,66 @@ make_MAML = function(data, output='YAML', input='table', lookup=NULL, datamap=NU
         }
       }
 
-      list(
+      if('qc' %in% fields_optional & is.data.frame(data)){
+        qc_min = min(data[[col_names[i]]], na.rm=TRUE)
+        qc_max = max(data[[col_names[i]]], na.rm=TRUE)
+        qc_null = 'NA'
+      }else{
+        qc_min = NULL
+        qc_max = NULL
+        qc_null = NULL
+      }
+
+      temp_field = list(
         name = col_names[i],
         unit = unit,
-        description = description,
+        info = info,
         ucd = ucd,
-        data_type = data_type
+        data_type = data_type,
+        array_size = array_size,
+        qc = list(
+          min = qc_min,
+          max = qc_max,
+          miss = qc_null
+        )
       )
+
+      return(temp_field[names(temp_field) %in% c('name', 'data_type', fields_optional)])
     }
-  }else if(input == 'meta'){
+  }else if(input == 'meta_col'){
     fields = apply(data, MARGIN=1, as.list)
   }else{
-    stop('input must be table or meta!')
+    stop('input must be table or meta_col')
   }
 
   header = list(
-    survey = "Survey Name",
-    dataset = "Dataset Name",
-    table = "Table Name",
-    version = "0.0",
+    survey = "Optional survey name",
+    dataset = "Recommended dataset name",
+    table = "Required table name",
+    version = "Required version (string, integer, or float)",
     date = as.character(Sys.Date()),
-    author = "Lead Author <email>",
+    author = "Required lead author name <email>",
     coauthors = list(
-      "Co-Author 1 <email1>",
-      "Co-Author 2 <email2>"
+      "Optional coauthor name <email1>",
+      "... <...>"
     ),
-    depend = list(
-      "Dataset 1 this depends on [optional]",
-      "Dataset 2 this depends on [optional]"
+    DOIs = list(
+      "Optional DOI string",
+      "..."
     ),
-    comment = list(
-      "Something interesting about the data [optional]",
-      "Something else [optional]"
+    depends = list(
+      "Optional dataset dependency",
+      "..."
+    ),
+    description = "Recommended short description of the table",
+    comments = list(
+      "Optional comment or interesting fact",
+      "..."
+    ),
+    license = "Recommended license for the dataset / table",
+    keywords = list(
+      "Optional keyword tag",
+      "..."
     ),
     fields = fields
   )

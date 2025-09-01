@@ -25,7 +25,7 @@ fields:
 - name: ID
   unit: 
   info: 
-  ucd: 
+  ucd: meta.id
   data_type: int32
   array_size: 
   qc:
@@ -45,7 +45,7 @@ fields:
 - name: Date
   unit: 
   info: 
-  ucd: 
+  ucd: time;obs.exposure
   data_type: string
   array_size: 
   qc:
@@ -63,9 +63,9 @@ fields:
     max: 1
     miss: NA
 - name: RA
-  unit: 
+  unit: deg
   info: 
-  ucd: 
+  ucd: pos.eq.ra
   data_type: double
   array_size: 
   qc:
@@ -73,9 +73,9 @@ fields:
     max: 48.9
     miss: NA
 - name: Dec
-  unit: 
+  unit: deg
   info: 
-  ucd: 
+  ucd: pos.eq.dec
   data_type: double
   array_size: 
   qc:
@@ -85,7 +85,7 @@ fields:
 - name: Mag
   unit: 
   info: 
-  ucd: 
+  ucd: phot.mag
   data_type: double
   array_size: 
   qc:

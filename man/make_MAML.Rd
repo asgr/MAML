@@ -6,14 +6,19 @@
   Optionally returns the metadata as a YAML string, which is the MAML file format.
 }
 \usage{
-make_MAML(data, output = 'YAML', input = 'table', lookup = NULL, datamap = NULL, ...)
+make_MAML(data, output = 'YAML', input = 'table',
+  fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
+  lookup = NULL, datamap = NULL, ...)
 }
 \arguments{
   \item{data}{
 \code{data.frame}, \code{tibble} or Arrow Dataset containing the table or meta data to describe.
 }
   \item{input}{
-Character scalar; input type. Allowed are 'table' (a 2D view of the data table) or 'meta' (a data.frame view of fields meta data, see Examples).
+Character scalar; input type. Allowed are 'table' (a 2D view of the data table) or 'meta_col' (a data.frame view of fields meta data, see Examples).
+}
+  \item{fields_optional}{
+Character vector; which of the optional MAML field entries you wish to present in the generated skeleton.
 }
   \item{output}{
 Character scalar; output type. If \code{YAML} or \code{MAML}, returns the metadata as a YAML-formatted string. If \code{list}, returns a named list.
@@ -58,8 +63,7 @@ df = data.frame(
 )
 
 cat(make_MAML(df))
-cat(make_MAML(df, dataset = 'RIP'))
-cat(make_MAML(df, dataset = 'RIP', RIP = 'GroupFinding'))
+cat(make_MAML(df, dataset = 'GroupFinding'))
 cat(make_MAML(df, table = 'Example Name'))
 cat(make_MAML(df, table = 'Example Name', comment = NULL)) #delete comment field
 cat(make_MAML(df, table = 'Example Name', comment = list('Comment 1', 'Comment 2')))
@@ -69,11 +73,11 @@ ds = open_dataset(system.file('extdata', 'example.parquet', package = "MAML"))
 cat(make_MAML(ds))
 
 #The data.frame view of the fields meta data:
-meta = rbindlist(make_MAML(df, output='list')$fields)
+meta = rbindlist(make_MAML(df, output='list', fields_optional = c('unit', 'ucd'))$fields)
 print(meta)
 
 #Convert back to the YAML format:
-cat(make_MAML(meta, input = 'meta'))
+cat(make_MAML(meta, input = 'meta_col'))
 
 #load lookup to fill in more data automatically:
 lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
