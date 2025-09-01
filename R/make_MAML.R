@@ -72,7 +72,21 @@ make_MAML = function(data, output='YAML', input='table',
 
       if('qc' %in% fields_optional & is.data.frame(data)){
         qc_min = min(data[[col_names[i]]], na.rm=TRUE)
+        if(is.integer64(qc_min)){
+          if(qc_min > -.Machine$integer.max & qc_min < .Machine$integer.max){
+            qc_min = as.integer(qc_min)
+          }else{
+            qc_min = as.character(qc_min)
+          }
+        }
         qc_max = max(data[[col_names[i]]], na.rm=TRUE)
+        if(is.integer64(qc_max)){
+          if(qc_max > -.Machine$integer.max & qc_max < .Machine$integer.max){
+            qc_max = as.integer(qc_max)
+          }else{
+            qc_max = as.character(qc_max)
+          }
+        }
         qc_null = 'NA'
       }else{
         qc_min = NULL
