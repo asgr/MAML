@@ -1,6 +1,6 @@
-make_MAML = function(data, output='YAML', input='table',
+make_MAML = function(data, output='YAML', input = 'table',
                      fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
-                     lookup=NULL, datamap=NULL, ...){
+                     lookup = NULL, datamap = NULL, qc_null = 'Null', ...){
 
   i = j = NULL
 
@@ -79,6 +79,7 @@ make_MAML = function(data, output='YAML', input='table',
             qc_min = as.character(qc_min)
           }
         }
+
         qc_max = max(data[[col_names[i]]], na.rm=TRUE)
         if(is.integer64(qc_max)){
           if(qc_max > -.Machine$integer.max & qc_max < .Machine$integer.max){
@@ -87,7 +88,8 @@ make_MAML = function(data, output='YAML', input='table',
             qc_max = as.character(qc_max)
           }
         }
-        qc_null = 'NA'
+
+        qc_null = qc_null
       }else{
         qc_min = NULL
         qc_max = NULL

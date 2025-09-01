@@ -14,12 +14,12 @@ datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
 # Create the MAML output from target parquet
 ds = read_parquet(system.file('extdata', 'example.parquet', package = "MAML"))
 
-new_default = make_MAML(ds)
-new_lookup = make_MAML(ds, lookup=lookup)
-new_datamap = make_MAML(ds, datamap=datamap)
-new_lookup_datamap = make_MAML(ds, lookup=lookup, datamap=datamap)
+new_default = make_MAML(ds, date='2025-09-01')
+new_lookup = make_MAML(ds, lookup=lookup, date='2025-09-01')
+new_datamap = make_MAML(ds, datamap=datamap, date='2025-09-01')
+new_lookup_datamap = make_MAML(ds, lookup=lookup, datamap=datamap, date='2025-09-01')
 new_fields_lookup_datamap = make_MAML(ds, fields_optional = c('unit', 'ucd'),
-                                      lookup=lookup, datamap=datamap)
+                                      lookup=lookup, datamap=datamap, date='2025-09-01')
 
 # Check if the result is equal to temp
 expect_equal(example_default, new_default)

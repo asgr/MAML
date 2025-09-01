@@ -8,7 +8,7 @@
 \usage{
 make_MAML(data, output = 'YAML', input = 'table',
   fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
-  lookup = NULL, datamap = NULL, ...)
+  lookup = NULL, datamap = NULL, qc_null = 'Null', ...)
 }
 \arguments{
   \item{data}{
@@ -28,6 +28,9 @@ List; optional lookup matching list to create default entries in the MAML. See E
 }
   \item{datamap}{
 List; optional data type matching list. See Examples.
+}
+  \item{qc_null}{
+Scalar; what to specify for the missing data type of the column. This likely depends on the file format being used, but for Parquet it is probably best to set as the default ('Null').
 }
   \item{\dots}{
 Modify default entries (see Examples).
