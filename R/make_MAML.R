@@ -60,11 +60,11 @@ make_MAML = function(data, output='YAML', input='table',
             }
             if(!is.null(lookup[[j]]$info)){
               #Concat info blocks together (space sep):
-              info = paste(c(info, lookup[[j]]$info), collapse=' ')
+              info = c(info, lookup[[j]]$info)
             }
             if(!is.null(lookup[[j]]$ucd)){
               #Concat ucd together:
-              ucd = paste(c(ucd,lookup[[j]]$ucd), collapse=';')
+              ucd = c(ucd, lookup[[j]]$ucd)
             }
           }
         }
@@ -83,8 +83,8 @@ make_MAML = function(data, output='YAML', input='table',
       temp_field = list(
         name = col_names[i],
         unit = unit,
-        info = info,
-        ucd = sort(unique(ucd)),
+        info = paste(info, collapse=' '),
+        ucd = paste(sort(unique(ucd)), collapse=';'),
         data_type = data_type,
         array_size = array_size,
         qc = list(
