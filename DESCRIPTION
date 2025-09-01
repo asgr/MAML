@@ -11,7 +11,7 @@ Authors@R: c(
   )
 Description: Various tools to help create and manipulate table metadata with the maml format.
 License: LGPL-3
-Depends: yaml, foreach, arrow, data.table
+Depends: yaml, foreach, arrow, data.table, integer64
 Suggests: testthat
 Encoding: UTF-8
 LazyData: true
