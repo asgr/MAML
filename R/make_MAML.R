@@ -84,7 +84,7 @@ make_MAML = function(data, output='YAML', input='table',
         name = col_names[i],
         unit = unit,
         info = info,
-        ucd = ucd,
+        ucd = sort(unique(ucd)),
         data_type = data_type,
         array_size = array_size,
         qc = list(
