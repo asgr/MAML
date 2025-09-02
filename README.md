@@ -1,12 +1,12 @@
 # MAML
 
-MAML is a YAML based metadata format for tabular data (roughly implying Metadata yAML). See [MAML-Format](https://github.com/asgr/MAML-Format) for details.
+**MAML** is a **YAML** based metadata format for tabular data (roughly implying Metadata yAML). See [MAML-Format](https://github.com/asgr/MAML-Format) for details.
 
-This package is a simple R interface to help create, read and write MAML files.
+This package is a simple R interface to help create (based on a target table), read and write **MAML** files.
 
 ## Usage of R MAML Package
 
-So far we have defined what MAML is and what it should look like, but you can actually make it however you like: by hand, your own code, or perhaps using a helper package like this one. To get going I would recommend the latter (see also [pymaml](https://github.com/TrystanScottLambert/pymaml)) because it reduces human error.
+So far we have defined what **MAML** is and what it should look like, but you can actually make it however you like: by hand, your own code, or perhaps using a helper package like this one. To get going I would recommend the latter (see also [pymaml](https://github.com/TrystanScottLambert/pymaml)) because it reduces human error.
 
 ### Installation
 
@@ -19,7 +19,7 @@ remotes::install_github("asgr/MAML")
 
 ### A Simple Example 
 
-A simple example using a toy table we want to create MAML metadata from:
+A simple example using a toy table we want to create **MAML** metadata from:
 
 ```r
 df = data.frame(
@@ -44,7 +44,7 @@ This looks like:
   5    E 2025-07-26 FALSE 45.5 1.8 22.1
 ```
 
-Now running make_MAML:
+Now we can run **make_MAML** to automatically create much of the **MAML** schema, using information from the table itself where possible:
 
 ```r
 cat(make_MAML(df))
@@ -53,64 +53,210 @@ cat(make_MAML(df))
 Will create the following output:
 
 ```yaml
-survey: Survey Name
-dataset: Dataset Name
-table: Table Name
-version: '0.0'
-date: '2025-08-26'
-author: Lead Author <email>
+survey: Optional survey name
+dataset: Recommended dataset name
+table: Required table name
+version: Required version (string, integer, or float)
+date: '2025-09-02'
+author: Required lead author name <email>
 coauthors:
-- Co-Author 1 <email1>
-- Co-Author 2 <email2>
-depend:
-- Dataset 1 this depends on [optional]
-- Dataset 2 this depends on [optional]
-comment:
-- Something interesting about the data [optional]
-- Something else [optional]
+- Optional coauthor name <email1>
+- '... <...>'
+DOIs:
+- Optional DOI string
+- '...'
+depends:
+- Optional dataset dependency
+- '...'
+description: Recommended short description of the table
+comments:
+- Optional comment or interesting fact
+- '...'
+license: Recommended license for the dataset / table
+keywords:
+- Optional keyword tag
+- '...'
 fields:
 - name: ID
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: int32
+  array_size: 
+  qc:
+    min: 1
+    max: 5
+    miss: 'Null'
 - name: Name
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: string
+  array_size: 
+  qc:
+    min: A
+    max: E
+    miss: 'Null'
 - name: Date
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: string
+  array_size: 
+  qc:
+    min: '2025-06-13'
+    max: '2025-09-03'
+    miss: 'Null'
 - name: Flag
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: bool
+  array_size: 
+  qc:
+    min: 0
+    max: 1
+    miss: 'Null'
 - name: RA
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: double
+  array_size: 
+  qc:
+    min: 43.1
+    max: 48.9
+    miss: 'Null'
 - name: Dec
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: double
+  array_size: 
+  qc:
+    min: 1.2
+    max: 3.5
+    miss: 'Null'
 - name: Mag
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: double
+  array_size: 
+  qc:
+    min: 15.2
+    max: 22.1
+    miss: 'Null'
 ```
 
 Obviously there are more things a keen user will want to add on top of this, but it is a useful start.
 
+We can fill out more of the fields using additional inputs to the **make_MAML** function:
+
+```r
+cat(make_MAML(df, survey='WAVES', dataset='RIP_example', table='example_data'))
+```
+
+```yaml
+survey: WAVES
+dataset: RIP_example
+table: example_data
+version: Required version (string, integer, or float)
+date: '2025-09-02'
+author: Required lead author name <email>
+coauthors:
+- Optional coauthor name <email1>
+- '... <...>'
+DOIs:
+- Optional DOI string
+- '...'
+depends:
+- Optional dataset dependency
+- '...'
+description: Recommended short description of the table
+comments:
+- Optional comment or interesting fact
+- '...'
+license: Recommended license for the dataset / table
+keywords:
+- Optional keyword tag
+- '...'
+fields:
+- name: ID
+  unit: 
+  info: 
+  ucd: 
+  data_type: int32
+  array_size: 
+  qc:
+    min: 1
+    max: 5
+    miss: 'Null'
+- name: Name
+  unit: 
+  info: 
+  ucd: 
+  data_type: string
+  array_size: 
+  qc:
+    min: A
+    max: E
+    miss: 'Null'
+- name: Date
+  unit: 
+  info: 
+  ucd: 
+  data_type: string
+  array_size: 
+  qc:
+    min: '2025-06-13'
+    max: '2025-09-03'
+    miss: 'Null'
+- name: Flag
+  unit: 
+  info: 
+  ucd: 
+  data_type: bool
+  array_size: 
+  qc:
+    min: 0
+    max: 1
+    miss: 'Null'
+- name: RA
+  unit: 
+  info: 
+  ucd: 
+  data_type: double
+  array_size: 
+  qc:
+    min: 43.1
+    max: 48.9
+    miss: 'Null'
+- name: Dec
+  unit: 
+  info: 
+  ucd: 
+  data_type: double
+  array_size: 
+  qc:
+    min: 1.2
+    max: 3.5
+    miss: 'Null'
+- name: Mag
+  unit: 
+  info: 
+  ucd: 
+  data_type: double
+  array_size: 
+  qc:
+    min: 15.2
+    max: 22.1
+    miss: 'Null'
+```
+
 ### Lookup Autofill
 
-To make life easier with auto-populating the MAML you can use a look up dictionary (itself a YAML file). An example looks like this:
+To make life easier with auto-populating the **MAML** you can use a look up dictionary (itself a **YAML** file). An example looks like this:
 
 ```yaml
 - pattern: ID
@@ -154,72 +300,115 @@ Here the entries have the following meaning:
 * unit: Unit to use based on successful column name match (only first match is used). [optional]
 * description: Description to add (' ' separator) based on successful column name match. [optional]
 
-To use the above example lookup YAML we can run:
+To use the above example lookup **YAML** we can run:
 
 ```r
 lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
 cat(make_MAML(df, lookup=lookup))
 ```
 
-This now populates our MAML with more information:
+This now populates our **MAML** with more information:
 
 ```yaml
-survey: Survey Name
-dataset: Dataset Name
-table: Table Name
-version: '0.0'
-date: '2025-08-26'
-author: Lead Author <email>
+survey: Optional survey name
+dataset: Recommended dataset name
+table: Required table name
+version: Required version (string, integer, or float)
+date: '2025-09-02'
+author: Required lead author name <email>
 coauthors:
-- Co-Author 1 <email1>
-- Co-Author 2 <email2>
-depend:
-- Dataset 1 this depends on [optional]
-- Dataset 2 this depends on [optional]
-comment:
-- Something interesting about the data [optional]
-- Something else [optional]
+- Optional coauthor name <email1>
+- '... <...>'
+DOIs:
+- Optional DOI string
+- '...'
+depends:
+- Optional dataset dependency
+- '...'
+description: Recommended short description of the table
+comments:
+- Optional comment or interesting fact
+- '...'
+license: Recommended license for the dataset / table
+keywords:
+- Optional keyword tag
+- '...'
 fields:
 - name: ID
   unit: 
-  description: 
+  info: 
   ucd: meta.id
   data_type: int32
+  array_size: 
+  qc:
+    min: 1
+    max: 5
+    miss: 'Null'
 - name: Name
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: string
+  array_size: 
+  qc:
+    min: A
+    max: E
+    miss: 'Null'
 - name: Date
   unit: 
-  description: 
+  info: 
   ucd: time;obs.exposure
   data_type: string
+  array_size: 
+  qc:
+    min: '2025-06-13'
+    max: '2025-09-03'
+    miss: 'Null'
 - name: Flag
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: bool
+  array_size: 
+  qc:
+    min: 0
+    max: 1
+    miss: 'Null'
 - name: RA
   unit: deg
-  description: 
+  info: 
   ucd: pos.eq.ra
   data_type: double
+  array_size: 
+  qc:
+    min: 43.1
+    max: 48.9
+    miss: 'Null'
 - name: Dec
   unit: deg
-  description: 
+  info: 
   ucd: pos.eq.dec
   data_type: double
+  array_size: 
+  qc:
+    min: 1.2
+    max: 3.5
+    miss: 'Null'
 - name: Mag
   unit: 
-  description: 
+  info: 
   ucd: phot.mag
   data_type: double
+  array_size: 
+  qc:
+    min: 15.2
+    max: 22.1
+    miss: 'Null'
 ```
 
 ### Datamap Autofill
 
-It is also useful to be able to standardise the column types our data might have to the range of data types supported on a particular system (say a MySQL or Postgres database). For this reason we also define an optional datatype mapping YAML that should look something like the below:
+It is also useful to be able to standardise the column types our data might have to the range of data types supported on a particular system (say a MySQL or Postgres database). For this reason we also define an optional datatype mapping **YAML** that should look something like the below:
 
 ```yaml
 - input: [short, int8, int16, i8, i16]
@@ -242,67 +431,114 @@ It is also useful to be able to standardise the column types our data might have
 
 Here the vector of possible inputs must always map onto a unique output. Any input and output should only appear once in this list. If an input maps to 'error' then the code will stop and return an error (since the datatype is not trivial to map to one of the desired outputs).
 
-To use the above example datatype mapping YAML we can run:
+To use the above example datatype mapping **YAML** we can run:
 
 ```r
 datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
 cat(make_MAML(df, datamap=datamap))
 ```
 
-This now populates our MAML with more information:
+This now populates our **MAML** with more information:
 
 ```yaml
-survey: Survey Name
-dataset: Dataset Name
-table: Table Name
-version: '0.0'
-date: '2025-08-28'
-author: Lead Author <email>
+survey: Optional survey name
+dataset: Recommended dataset name
+table: Required table name
+version: Required version (string, integer, or float)
+date: '2025-09-02'
+author: Required lead author name <email>
 coauthors:
-- Co-Author 1 <email1>
-- Co-Author 2 <email2>
-depend:
-- Dataset 1 this depends on [optional]
-- Dataset 2 this depends on [optional]
-comment:
-- Something interesting about the data [optional]
-- Something else [optional]
+- Optional coauthor name <email1>
+- '... <...>'
+DOIs:
+- Optional DOI string
+- '...'
+depends:
+- Optional dataset dependency
+- '...'
+description: Recommended short description of the table
+comments:
+- Optional comment or interesting fact
+- '...'
+license: Recommended license for the dataset / table
+keywords:
+- Optional keyword tag
+- '...'
 fields:
 - name: ID
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: int32
+  array_size: 
+  qc:
+    min: 1
+    max: 5
+    miss: 'Null'
 - name: Name
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: string
+  array_size: 
+  qc:
+    min: A
+    max: E
+    miss: 'Null'
 - name: Date
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: string
+  array_size: 
+  qc:
+    min: '2025-06-13'
+    max: '2025-09-03'
+    miss: 'Null'
 - name: Flag
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: boolean
+  array_size: 
+  qc:
+    min: 0
+    max: 1
+    miss: 'Null'
 - name: RA
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: float64
+  array_size: 
+  qc:
+    min: 43.1
+    max: 48.9
+    miss: 'Null'
 - name: Dec
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: float64
+  array_size: 
+  qc:
+    min: 1.2
+    max: 3.5
+    miss: 'Null'
 - name: Mag
   unit: 
-  description: 
+  info: 
   ucd: 
   data_type: float64
+  array_size: 
+  qc:
+    min: 15.2
+    max: 22.1
+    miss: 'Null'
 ```
 
 Notice how the data_type entries have been updated to reflect the desired mapping.
+
+## Conclusions
+
+The hope is these tools get the typical user 80% of the way to making a useful **MAML** file, but suggestions on how to better automate this process are always welcome (use GitHub Issues).
