@@ -35,7 +35,9 @@ Aaron Robotham
 \code{\link{make_MAML}}, \code{\link{write_MAML}}, \code{\link[yaml]{as.yaml}}
 }
 \examples{
-# Nothing yet
+example_default = read_MAML(system.file('extdata', 'example_default.maml',
+  package = "MAML"), output='maml')
+cat(example_default)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

@@ -2,11 +2,11 @@ library(testthat)
 
 context("Check Rfits table/image read/write")
 # Read the MAML file
-example_default = read_MAML(system.file('extdata', 'example_default.maml', package = "MAML"), output='yaml')
-example_lookup = read_MAML(system.file('extdata', 'example_lookup.maml', package = "MAML"), output='yaml')
-example_datamap = read_MAML(system.file('extdata', 'example_datamap.maml', package = "MAML"), output='yaml')
-example_lookup_datamap = read_MAML(system.file('extdata', 'example_lookup_datamap.maml', package = "MAML"), output='yaml')
-example_fields_lookup_datamap = read_MAML(system.file('extdata', 'example_fields_lookup_datamap.maml', package = "MAML"), output='yaml')
+example_default = read_MAML(system.file('extdata', 'example_default.maml', package = "MAML"), output='maml')
+example_lookup = read_MAML(system.file('extdata', 'example_lookup.maml', package = "MAML"), output='maml')
+example_datamap = read_MAML(system.file('extdata', 'example_datamap.maml', package = "MAML"), output='maml')
+example_lookup_datamap = read_MAML(system.file('extdata', 'example_lookup_datamap.maml', package = "MAML"), output='maml')
+example_fields_lookup_datamap = read_MAML(system.file('extdata', 'example_fields_lookup_datamap.maml', package = "MAML"), output='maml')
 
 lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
 datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
