@@ -8,18 +8,28 @@ MAML Writer
 Simple MAML writer, using the lower level yaml function to format the data.
 }
 \usage{
-write_MAML(MAML, file = "temp.maml", input = "YAML")
+write_MAML(MAML, filename = "temp.maml", table = NULL, input = 'MAML', output = 'MAML',
+  ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{MAML}{
-List or character scalar; input MAML metadata (can be list or YAML string format).
+List or character scalar; input MAML metadata (can be list or MAML string format).
 }
-  \item{file}{
-Character scalar; file to write output to. Should end ".maml".
+  \item{filename}{
+Character scalar; filename to write output to. Should end ".maml".
+}
+  \item{table}{
+Table, table that MAML should be inserted into. Can be any format that \code{arrow} can convert to and Arrow table (so data.frame, data.table, tibble all work).
 }
   \item{input}{
-Character scalar; specify the input format. Either 'YAML' for a character string, of 'list' for an R list structure.
+Character scalar; specify the input format. Either 'MAML' for a character string, of 'list' for an R list structure.
+}
+  \item{output}{
+Character scalar; specify the output format. Either 'MAML' for a character string standalone ".maml" text file, or "Parquet" for the MAML to be added to the metadata of Parquet file (will be inserted into metadata$maml). In the latter case \option{table} is required.
+}
+  \item{\dots}{
+Dots to be passed to \code{write_parquet}.
 }
 }
 \details{

@@ -1,4 +1,4 @@
-make_MAML = function(data, output='YAML', input = 'table',
+make_MAML = function(data, output='MAML', input = 'table',
                      fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
                      lookup = NULL, datamap = NULL, qc_null = 'Null', ...){
 

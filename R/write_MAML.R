@@ -1,4 +1,4 @@
-write_MAML = function(MAML, file='temp.maml', input='YAML'){
+write_MAML = function(MAML, filename='temp.maml', table=NULL, input='MAML', output='MAML', ...){
   if(input == 'list' & inherits(MAML, 'list')){
     MAML = yaml::as.yaml(MAML)
     MAML = gsub(": ''\n", ": \n", MAML)
@@ -8,11 +8,19 @@ write_MAML = function(MAML, file='temp.maml', input='YAML'){
     MAML = gsub(": .na.real\n", ": \n", MAML)
     MAML = gsub(": .na.character\n", ": \n", MAML)
     MAML = gsub(": .nan\n", ": \n", MAML)
-    input = 'yaml'
+    input = 'maml'
   }
 
-  if(tolower(input) == 'yaml' & is.character(MAML)){
+  if(!is.character(MAML)){
+    stop('MAML input is not in the expected format')
+  }
+
+  if(tolower(input) == 'maml' & tolower(output) == 'maml'){
     cat(MAML, file=file)
+  }else if(tolower(input) == 'maml' & tolower(output) == 'parquet'){
+    table = arrow::as_arrow_table(table)
+    table$metadata$maml = MAML
+    arrow::write_parquet(table, filename, ...)
   }else{
     stop('MAML input is not in the expected format')
   }

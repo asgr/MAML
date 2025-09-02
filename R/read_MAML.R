@@ -1,8 +1,8 @@
-read_MAML = function(file='test.maml', output='list', ...){
+read_MAML = function(filename='test.maml', output='list', ...){
   if(output == 'list'){
-    temp = read_yaml(file, ...)
+    temp = read_yaml(filename, ...)
   }else if(tolower(output) == 'maml' | tolower(output) == 'yaml'){
-    temp = readLines(file, ...)
+    temp = readLines(filename, ...)
     temp = paste(temp, collapse = "\n")
     temp = paste0(temp, '\n')
   }

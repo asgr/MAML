@@ -1,12 +1,12 @@
 \name{make_MAML}
 \alias{make_MAML}
-\title{Generate Metadata YAML}
+\title{Generate MAML: Metadata yAML}
 \description{
   Creates a metadata structure (MAML) based on the columns and types of a given data.frame, Parquet file or Arrow Dataset.
   Optionally returns the metadata as a YAML string, which is the MAML file format.
 }
 \usage{
-make_MAML(data, output = 'YAML', input = 'table',
+make_MAML(data, output = 'MAML', input = 'table',
   fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
   lookup = NULL, datamap = NULL, qc_null = 'Null', ...)
 }
@@ -21,7 +21,7 @@ Character scalar; input type. Allowed are 'table' (a 2D view of the data table) 
 Character vector; which of the optional MAML field entries you wish to present in the generated skeleton.
 }
   \item{output}{
-Character scalar; output type. If \code{YAML} or \code{MAML}, returns the metadata as a YAML-formatted string. If \code{list}, returns a named list.
+Character scalar; output type. If \code{MAML}, returns the metadata as a MAML-formatted string. If \code{list}, returns a named list.
 }
   \item{lookup}{
 List; optional lookup matching list to create default entries in the MAML. See Examples.
@@ -42,11 +42,11 @@ Modify default entries (see Examples).
   a description of each field. Field types are inferred either from the \code{arrow::schema()} or
   from base R classes.
 
-  The resulting metadata is suitable for use in data documentation, archiving, or interoperability
+  The resulting MAML metadata is suitable for use in data documentation, archiving, or interoperability
   with systems that consume YAML metadata.
 }
 \value{
-  A character string containing YAML-formatted metadata if \code{yaml_out = TRUE}, otherwise a named list.
+  A character string containing MAML-formatted metadata if \code{output} = 'MAML', otherwise a named list.
 }
 \author{
   Aaron Robotham
@@ -79,7 +79,7 @@ cat(make_MAML(ds))
 meta = rbindlist(make_MAML(df, output='list', fields_optional = c('unit', 'ucd'))$fields)
 print(meta)
 
-#Convert back to the YAML format:
+#Convert back to the MAML format:
 cat(make_MAML(meta, input = 'meta_col'))
 
 #load lookup to fill in more data automatically:

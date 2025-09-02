@@ -8,15 +8,15 @@ MAML Reader
 Simple MAML reader, using the lower level \code{read_yaml} function to format the data.
 }
 \usage{
-read_MAML(file = "test.maml", output = "list", ...)
+read_MAML(filename = "test.maml", output = "list", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file}{
+  \item{filename}{
 Character scalar; file read. Should usually end ".maml" (but perhaps sometimes ".yaml").
 }
   \item{output}{
-Character scalar; format of output from function. Either 'list' which is an R list stucture, or 'YAML' which is a character string (i.e. the full contents of the target MAML file).
+Character scalar; format of output from function. Either 'list' which is an R list stucture, or 'MAML' which is a character string (i.e. the full contents of the target MAML file).
 }
   \item{\dots}{
 Other arguments passes to read_yaml (\option{output} = 'list') or \code{\link{readLines}} (\option{output} = 'YAML').
