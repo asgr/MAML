@@ -13,10 +13,10 @@ merge_MAML(MAML_primary, MAML_secondary, prefer = "primary", output = "MAML")
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{MAML_primary}{
-List; the MAML we want to populate with more information.
+Character scalar or List; the MAML we want to populate with more information.
 }
   \item{MAML_secondary}{
-List; the MAML potentially containing additional information.
+Character scalar or List; the MAML potentially containing additional information.
 }
   \item{prefer}{
 Which takes priority in the case where both have entires. Either 'primary' (default) or 'secondary'.

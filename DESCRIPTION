@@ -1,7 +1,7 @@
 Package: MAML
 Type: Package
 Title: Metadata with YAML Tools
-Version: 0.2.6
+Version: 0.3.0
 Authors@R: c(
     person(
       "Aaron", "Robotham",
@@ -11,7 +11,7 @@ Authors@R: c(
   )
 Description: Various tools to help create and manipulate table metadata with the maml format.
 License: LGPL-3
-Depends: yaml, foreach, arrow, data.table, bit64
+Depends: yaml, foreach, arrow, data.table, bit64, jsonlite, jsonvalidate
 Suggests: testthat
 Encoding: UTF-8
 LazyData: true
