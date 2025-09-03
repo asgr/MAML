@@ -1,14 +1,18 @@
 \name{read_MAML}
 \alias{read_MAML}
+\alias{MAML_to_list}
+\alias{list_to_MAML}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 MAML Reader
 }
 \description{
-Simple MAML reader, using the lower level \code{read_yaml} function to format the data.
+Simple MAML reader and converter functions, using the lower level \code{read_yaml} function to format the data.
 }
 \usage{
 read_MAML(filename = "test.maml", output = "list", ...)
+MAML_to_list(MAML)
+list_to_MAML(x)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,6 +22,12 @@ Character scalar; file read. Should usually end ".maml" (but perhaps sometimes "
   \item{output}{
 Character scalar; format of output from function. Either 'list' which is an R list stucture, or 'MAML' which is a character string (i.e. the full contents of the target MAML file).
 }
+  \item{MAML}{
+Character scalar; a class MAML string.
+}
+  \item{x}{
+List; a MAML compatible list.
+}
   \item{\dots}{
 Other arguments passes to read_yaml (\option{output} = 'list') or \code{\link{readLines}} (\option{output} = 'YAML').
 }
@@ -26,7 +36,11 @@ Other arguments passes to read_yaml (\option{output} = 'list') or \code{\link{re
 This is a high-level interface to read the MAML from disk.
 }
 \value{
-Output depends on the setting of \option{output}. Either \option{output} = 'list' which is an R list stucture, or \option{output} = 'YAML' which is a character string (i.e. the full contents of the target MAML file).
+For \code{read_MAML} output depends on the setting of \option{output}. Either \option{output} = 'list' which is an R list stucture, or \option{output} = 'MAML' which is a character string (i.e. the full contents of the target MAML file).
+
+For \code{MAML_to_list} the output is a list.
+
+For \code{list_to_MAML} the output is a class MAML string (scalar).
 }
 \author{
 Aaron Robotham

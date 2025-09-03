@@ -118,7 +118,7 @@ make_MAML = function(data, output='MAML', input = 'table',
     stop('input must be table or meta_col')
   }
 
-  header = list(
+  MAML = list(
     survey = "Optional survey name",
     dataset = "Recommended dataset name",
     table = "Required table name",
@@ -154,26 +154,18 @@ make_MAML = function(data, output='MAML', input = 'table',
 
   if(length(dots) > 0){
     for(i in 1:length(dots)){
-      header[[names(dots)[i]]] = dots[[i]]
+      MAML[[names(dots)[i]]] = dots[[i]]
     }
   }
 
   if(tolower(output) == 'yaml' | tolower(output) == 'maml'){
-    header = yaml::as.yaml(header)
-    header = gsub(": ''\n", ": \n", header)
-    header = gsub(": ~\n", ": \n", header)
-    header = gsub(": .na\n", ": \n", header)
-    header = gsub(": .na.integer\n", ": \n", header)
-    header = gsub(": .na.real\n", ": \n", header)
-    header = gsub(": .na.character\n", ": \n", header)
-    header = gsub(": .nan\n", ": \n", header)
+    MAML = list_to_MAML(MAML)
   }else if(tolower(output) == 'list'){
     #do nothing
   }else{
-    stop('output type must be maml or list')
+    stop('Output type must be MAML or list!')
   }
-
-  return(header)
+  return(MAML)
 }
 
 .dataype_map = function(input, map){
