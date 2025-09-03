@@ -8,12 +8,15 @@ Validate a MAML
 Can validate wither a MAML string or list object aginst the official schema JSON specification.
 }
 \usage{
-validate_MAML(MAML)
+validate_MAML(MAML, schema = 'get')
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{MAML}{
 Character scalar or List; the MAML we want to validate against the official schema.
+}
+  \item{schema}{
+Character scalar, if 'get' then it will use the default MAML schema that is included with the package, otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
 }
 }
 \details{
@@ -38,7 +41,7 @@ example_default = read_MAML(system.file('extdata', 'example_default.maml',
   package = "MAML"), output='list')
 validate_MAML(example_default)
 
-#to check the validation schema directly:
+#to check the default validation schema directly:
 
 cat(readLines(system.file('extdata', 'MAML_schema.json', package = "MAML")), sep = "\n")
 }

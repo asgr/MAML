@@ -1,8 +1,11 @@
-validate_MAML = function(MAML){
+validate_MAML = function(MAML, schema='get'){
   if(inherits(MAML, 'MAML') | (is.character(MAML) & length(MAML) == 1L)){
     MAML = MAML_to_list(MAML)
   }
-  schema_json = system.file('extdata', 'MAML_schema.json', package = "MAML")
+
+  if(schema == 'get'){
+    schema_json = system.file('extdata', 'MAML_schema.json', package = "MAML")
+  }
 
   MAML_json = toJSON(MAML, pretty = TRUE, auto_unbox = TRUE, na = 'null')
 
