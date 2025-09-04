@@ -13,13 +13,13 @@ lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
 datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
 
 # Create the MAML output from target parquet
-ds = read_parquet(system.file('extdata', 'example.parquet', package = "MAML"))
+df = read_parquet(system.file('extdata', 'example.parquet', package = "MAML"))
 
-new_default = make_MAML(ds, date='2025-09-01')
-new_lookup = make_MAML(ds, lookup=lookup, date='2025-09-01')
-new_datamap = make_MAML(ds, datamap=datamap, date='2025-09-01')
-new_lookup_datamap = make_MAML(ds, lookup=lookup, datamap=datamap, date='2025-09-01')
-new_fields_lookup_datamap = make_MAML(ds, fields_optional = c('unit', 'ucd'),
+new_default = make_MAML(df, date='2025-09-01')
+new_lookup = make_MAML(df, lookup=lookup, date='2025-09-01')
+new_datamap = make_MAML(df, datamap=datamap, date='2025-09-01')
+new_lookup_datamap = make_MAML(df, lookup=lookup, datamap=datamap, date='2025-09-01')
+new_fields_lookup_datamap = make_MAML(df, fields_optional = c('unit', 'ucd'),
                                       lookup=lookup, datamap=datamap, date='2025-09-01')
 
 # Check if the MAMLs pass the current validator
@@ -29,7 +29,7 @@ expect_true(validate_MAML(new_datamap))
 expect_true(validate_MAML(new_lookup_datamap))
 expect_true(validate_MAML(new_fields_lookup_datamap))
 
-# Check if the result is equal to temp
+# Check if the newly generated MAML result is equal to the expected
 expect_equal(example_default, new_default)
 expect_equal(example_lookup, new_lookup)
 expect_equal(example_datamap, new_datamap)

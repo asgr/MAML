@@ -23,6 +23,7 @@ validate_MAML = function(MAML, schema='get'){
   MAML_json = gsub('"unit": {}', '"unit": null', MAML_json, fixed = T)
   MAML_json = gsub('"info": {}', '"info": null', MAML_json, fixed = T)
   MAML_json = gsub('"ucd": {}', '"ucd": null', MAML_json, fixed = T)
+  MAML_json = gsub('"data_type": {}', '"data_type": null', MAML_json, fixed = T)
   MAML_json = gsub('"array_size": {}', '"array_size": null', MAML_json, fixed = T)
   MAML_json = gsub('"min": {}', '"min": null', MAML_json, fixed = T)
   MAML_json = gsub('"max": {}', '"max": null', MAML_json, fixed = T)

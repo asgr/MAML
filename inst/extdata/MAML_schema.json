@@ -103,8 +103,8 @@
             "description": "Recommended UCD string"
           },
           "data_type": {
-            "type": "string",
-            "description": "Required data type (e.g., int32, string, bool, double)"
+            "type": ["string", "null"],
+            "description": "Optional data type (e.g., int32, string, bool, double)"
           },
           "array_size": {
             "type": ["integer", "string", "null"],
@@ -115,7 +115,7 @@
             "properties": {
               "min": { "type": ["number", "string", "null"] },
               "max": { "type": ["number", "string", "null"] },
-              "miss": { "type": ["number", "string", "null"], }
+              "miss": { "type": ["number", "string", "null"] }
             },
             "description": "Optional quality control parameters"
           }

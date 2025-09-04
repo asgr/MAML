@@ -6,5 +6,5 @@ fields_flat_MAML = function(MAML, fields_keep = c('name', 'unit', 'info', 'ucd',
   i = NULL
   meta_col = rbindlist(foreach(i = MAML$fields)%do%{lapply(i, paste, collapse=';')}, fill=TRUE)
   setDF(meta_col)
-  return(meta_col[,fields_keep])
+  return(meta_col[,names(meta_col) %in% fields_keep])
 }
