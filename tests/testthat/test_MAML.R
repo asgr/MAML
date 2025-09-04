@@ -22,6 +22,13 @@ new_lookup_datamap = make_MAML(ds, lookup=lookup, datamap=datamap, date='2025-09
 new_fields_lookup_datamap = make_MAML(ds, fields_optional = c('unit', 'ucd'),
                                       lookup=lookup, datamap=datamap, date='2025-09-01')
 
+# Check if the MAMLs pass the current validator
+expect_true(validate_MAML(new_default))
+expect_true(validate_MAML(new_lookup))
+expect_true(validate_MAML(new_datamap))
+expect_true(validate_MAML(new_lookup_datamap))
+expect_true(validate_MAML(new_fields_lookup_datamap))
+
 # Check if the result is equal to temp
 expect_equal(example_default, new_default)
 expect_equal(example_lookup, new_lookup)

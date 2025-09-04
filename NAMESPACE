@@ -7,3 +7,5 @@ import(data.table)
 import(bit64)
 import(jsonlite)
 import(jsonvalidate)
+
+importFrom("utils", "read.table")

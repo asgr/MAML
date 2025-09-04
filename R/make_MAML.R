@@ -60,7 +60,12 @@ make_MAML = function(data, output='MAML', input = 'table',
             }
             if(!is.null(lookup[[j]]$info)){
               #Concat info blocks together (space sep):
-              info = c(info, lookup[[j]]$info)
+              if(is.null(info)){
+                info = lookup[[j]]$info
+              }else if(grepl(lookup[[j]]$info, info, fixed = TRUE) == FALSE){
+                #check the new info is unique (otherwise do not add)
+                info = c(info, lookup[[j]]$info)
+              }
             }
             if(!is.null(lookup[[j]]$ucd)){
               #Concat ucd together:
@@ -100,7 +105,7 @@ make_MAML = function(data, output='MAML', input = 'table',
         name = col_names[i],
         unit = unit,
         info = paste(info, collapse=' '),
-        ucd = paste(unique(ucd), collapse=';'),
+        ucd = unique(ucd),
         data_type = data_type,
         array_size = array_size,
         qc = list(

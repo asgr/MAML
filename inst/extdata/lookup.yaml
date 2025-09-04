@@ -1,7 +1,7 @@
 - pattern: ID
   match_by: suffix
   ignore_case: FALSE
-  ucd: meta.id
+  ucd: [meta.id, meta.main]
 - pattern: RA
   match_by: prefix
   ignore_case: FALSE

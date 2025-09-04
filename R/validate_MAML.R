@@ -9,6 +9,17 @@ validate_MAML = function(MAML, schema='get'){
 
   MAML_json = toJSON(MAML, pretty = TRUE, auto_unbox = TRUE, na = 'null')
 
+  #Fill missing table meta with null
+  MAML_json = gsub('"survey": {}', '"survey": null', MAML_json, fixed = T)
+  MAML_json = gsub('"dataset": {}', '"dataset": null', MAML_json, fixed = T)
+  MAML_json = gsub('"coauthors": {}', '"coauthors": null', MAML_json, fixed = T)
+  MAML_json = gsub('"DOIs": {}', '"DOIs": null', MAML_json, fixed = T)
+  MAML_json = gsub('"depends": {}', '"depends": null', MAML_json, fixed = T)
+  MAML_json = gsub('"description": {}', '"description": null', MAML_json, fixed = T)
+  MAML_json = gsub('"license": {}', '"license": null', MAML_json, fixed = T)
+  MAML_json = gsub('"keywords": {}', '"keywords": null', MAML_json, fixed = T)
+
+  #Fill missing fields meta with null
   MAML_json = gsub('"unit": {}', '"unit": null', MAML_json, fixed = T)
   MAML_json = gsub('"info": {}', '"info": null', MAML_json, fixed = T)
   MAML_json = gsub('"ucd": {}', '"ucd": null', MAML_json, fixed = T)
@@ -17,5 +28,27 @@ validate_MAML = function(MAML, schema='get'){
   MAML_json = gsub('"max": {}', '"max": null', MAML_json, fixed = T)
   MAML_json = gsub('"miss": {}', '"miss": null', MAML_json, fixed = T)
 
-  return(json_validate(MAML_json, schema_json, verbose = TRUE, engine='ajv'))
+  current_valid = json_validate(MAML_json, schema_json, verbose = TRUE, engine='ajv')
+
+  if(isTRUE(current_valid)){
+    message('Passing JSON schema validation!')
+  }else{
+    message('Failing JSON schema validation!')
+    return(current_valid)
+  }
+
+  valid_UCD = read.table(system.file('extdata', 'valid_UCD_v1p6.dat', package = "MAML"))[,1]
+
+  for(i in MAML$fields){
+    if(!is.null(i$ucd)){
+      if(any(!(i$ucd %in% valid_UCD))){
+        message('Failing UCD name validation!')
+        message('Non valid UCDs: ', paste(i$ucd[!(i$ucd %in% valid_UCD)], collapse=' '))
+      }
+    }
+  }
+
+  message('Passing UCD name validation!')
+
+  return(current_valid)
 }
