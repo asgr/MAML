@@ -4,7 +4,7 @@ validate_MAML = function(MAML, schema='get'){
   }
 
   if(schema == 'get'){
-    schema_json = system.file('extdata', 'MAML_schema.json', package = "MAML")
+    schema = system.file('extdata', 'MAML_schema_v1p0.json', package = "MAML")
   }
 
   MAML_json = toJSON(MAML, pretty = TRUE, auto_unbox = TRUE, na = 'null')
@@ -29,7 +29,7 @@ validate_MAML = function(MAML, schema='get'){
   MAML_json = gsub('"max": {}', '"max": null', MAML_json, fixed = T)
   MAML_json = gsub('"miss": {}', '"miss": null', MAML_json, fixed = T)
 
-  current_valid = json_validate(MAML_json, schema_json, verbose = TRUE, engine='ajv')
+  current_valid = json_validate(MAML_json, schema, verbose = TRUE, engine='ajv')
 
   if(isTRUE(current_valid)){
     message('Passing JSON schema validation!')

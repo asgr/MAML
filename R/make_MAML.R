@@ -135,12 +135,18 @@ make_MAML = function(data, output='MAML', input = 'table',
       "... <...>"
     ),
     DOIs = list(
-      "Optional DOI string",
-      "..."
+      list(
+        DOI = 'Valid DOI',
+        type = 'DOI type'
+      )
     ),
     depends = list(
-      "Optional dataset dependency",
-      "..."
+      list(
+        survey = 'Dependent survey',
+        dataset = 'Dependent dataset',
+        table = 'Dependent table',
+        version = 'Dependent table version'
+      )
     ),
     description = "Recommended short description of the table",
     comments = list(
@@ -152,6 +158,7 @@ make_MAML = function(data, output='MAML', input = 'table',
       "Optional keyword tag",
       "..."
     ),
+    MAML_version = 1.0,
     fields = fields
   )
 
