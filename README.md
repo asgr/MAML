@@ -57,17 +57,19 @@ survey: Optional survey name
 dataset: Recommended dataset name
 table: Required table name
 version: Required version (string, integer, or float)
-date: '2025-09-02'
+date: '2025-09-01'
 author: Required lead author name <email>
 coauthors:
 - Optional coauthor name <email1>
 - '... <...>'
 DOIs:
-- Optional DOI string
-- '...'
+- DOI: Valid DOI
+  type: DOI type
 depends:
-- Optional dataset dependency
-- '...'
+- survey: Dependent survey
+  dataset: Dependent dataset
+  table: Dependent table
+  version: Dependent table version
 description: Recommended short description of the table
 comments:
 - Optional comment or interesting fact
@@ -76,73 +78,74 @@ license: Recommended license for the dataset / table
 keywords:
 - Optional keyword tag
 - '...'
+MAML_version: 1.0
 fields:
 - name: ID
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: int32
-  array_size: 
+  array_size:
   qc:
     min: 1
     max: 5
     miss: 'Null'
 - name: Name
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: A
     max: E
     miss: 'Null'
 - name: Date
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: '2025-06-13'
     max: '2025-09-03'
     miss: 'Null'
 - name: Flag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: bool
-  array_size: 
+  array_size:
   qc:
     min: 0
     max: 1
     miss: 'Null'
 - name: RA
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 43.1
     max: 48.9
     miss: 'Null'
 - name: Dec
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 1.2
     max: 3.5
     miss: 'Null'
 - name: Mag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 15.2
     max: 22.1
@@ -162,17 +165,19 @@ survey: WAVES
 dataset: RIP_example
 table: example_data
 version: Required version (string, integer, or float)
-date: '2025-09-02'
+date: '2025-09-01'
 author: Required lead author name <email>
 coauthors:
 - Optional coauthor name <email1>
 - '... <...>'
 DOIs:
-- Optional DOI string
-- '...'
+- DOI: Valid DOI
+  type: DOI type
 depends:
-- Optional dataset dependency
-- '...'
+- survey: Dependent survey
+  dataset: Dependent dataset
+  table: Dependent table
+  version: Dependent table version
 description: Recommended short description of the table
 comments:
 - Optional comment or interesting fact
@@ -181,73 +186,74 @@ license: Recommended license for the dataset / table
 keywords:
 - Optional keyword tag
 - '...'
+MAML_version: 1.0
 fields:
 - name: ID
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: int32
-  array_size: 
+  array_size:
   qc:
     min: 1
     max: 5
     miss: 'Null'
 - name: Name
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: A
     max: E
     miss: 'Null'
 - name: Date
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: '2025-06-13'
     max: '2025-09-03'
     miss: 'Null'
 - name: Flag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: bool
-  array_size: 
+  array_size:
   qc:
     min: 0
     max: 1
     miss: 'Null'
 - name: RA
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 43.1
     max: 48.9
     miss: 'Null'
 - name: Dec
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 1.2
     max: 3.5
     miss: 'Null'
 - name: Mag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 15.2
     max: 22.1
@@ -314,17 +320,19 @@ survey: Optional survey name
 dataset: Recommended dataset name
 table: Required table name
 version: Required version (string, integer, or float)
-date: '2025-09-02'
+date: '2025-09-01'
 author: Required lead author name <email>
 coauthors:
 - Optional coauthor name <email1>
 - '... <...>'
 DOIs:
-- Optional DOI string
-- '...'
+- DOI: Valid DOI
+  type: DOI type
 depends:
-- Optional dataset dependency
-- '...'
+- survey: Dependent survey
+  dataset: Dependent dataset
+  table: Dependent table
+  version: Dependent table version
 description: Recommended short description of the table
 comments:
 - Optional comment or interesting fact
@@ -333,73 +341,78 @@ license: Recommended license for the dataset / table
 keywords:
 - Optional keyword tag
 - '...'
+MAML_version: 1.0
 fields:
 - name: ID
-  unit: 
-  info: 
-  ucd: meta.id
+  unit:
+  info:
+  ucd:
+  - meta.id
+  - meta.main
   data_type: int32
-  array_size: 
+  array_size:
   qc:
     min: 1
     max: 5
     miss: 'Null'
 - name: Name
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: A
     max: E
     miss: 'Null'
 - name: Date
-  unit: 
-  info: 
-  ucd: time;obs.exposure
+  unit:
+  info:
+  ucd:
+  - time
+  - obs.exposure
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: '2025-06-13'
     max: '2025-09-03'
     miss: 'Null'
 - name: Flag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: bool
-  array_size: 
+  array_size:
   qc:
     min: 0
     max: 1
     miss: 'Null'
 - name: RA
   unit: deg
-  info: 
+  info:
   ucd: pos.eq.ra
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 43.1
     max: 48.9
     miss: 'Null'
 - name: Dec
   unit: deg
-  info: 
+  info:
   ucd: pos.eq.dec
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 1.2
     max: 3.5
     miss: 'Null'
 - name: Mag
-  unit: 
-  info: 
+  unit:
+  info:
   ucd: phot.mag
   data_type: double
-  array_size: 
+  array_size:
   qc:
     min: 15.2
     max: 22.1
@@ -445,17 +458,19 @@ survey: Optional survey name
 dataset: Recommended dataset name
 table: Required table name
 version: Required version (string, integer, or float)
-date: '2025-09-02'
+date: '2025-09-01'
 author: Required lead author name <email>
 coauthors:
 - Optional coauthor name <email1>
 - '... <...>'
 DOIs:
-- Optional DOI string
-- '...'
+- DOI: Valid DOI
+  type: DOI type
 depends:
-- Optional dataset dependency
-- '...'
+- survey: Dependent survey
+  dataset: Dependent dataset
+  table: Dependent table
+  version: Dependent table version
 description: Recommended short description of the table
 comments:
 - Optional comment or interesting fact
@@ -464,80 +479,81 @@ license: Recommended license for the dataset / table
 keywords:
 - Optional keyword tag
 - '...'
+MAML_version: 1.0
 fields:
 - name: ID
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: int32
-  array_size: 
+  array_size:
   qc:
     min: 1
     max: 5
     miss: 'Null'
 - name: Name
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: A
     max: E
     miss: 'Null'
 - name: Date
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: string
-  array_size: 
+  array_size:
   qc:
     min: '2025-06-13'
     max: '2025-09-03'
     miss: 'Null'
 - name: Flag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: boolean
-  array_size: 
+  array_size:
   qc:
     min: 0
     max: 1
     miss: 'Null'
 - name: RA
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: float64
-  array_size: 
+  array_size:
   qc:
     min: 43.1
     max: 48.9
     miss: 'Null'
 - name: Dec
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: float64
-  array_size: 
+  array_size:
   qc:
     min: 1.2
     max: 3.5
     miss: 'Null'
 - name: Mag
-  unit: 
-  info: 
-  ucd: 
+  unit:
+  info:
+  ucd:
   data_type: float64
-  array_size: 
+  array_size:
   qc:
     min: 15.2
     max: 22.1
     miss: 'Null'
 ```
 
-Notice how the data_type entries have been updated to reflect the desired mapping.
+Notice how the data_type entries have been updated to reflect the desired mapping. Naturally you can combine the *lookup* and *data_type* options, and hopefully the typical user is more than half way to filling out a useful MAML.
 
 ## Conclusions
 
