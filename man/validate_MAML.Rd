@@ -8,7 +8,7 @@ Validate a MAML
 Can validate wither a MAML string or list object aginst the official schema JSON specification.
 }
 \usage{
-validate_MAML(MAML, schema = 'get')
+validate_MAML(MAML, schema = 'v1.0')
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
