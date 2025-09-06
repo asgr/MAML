@@ -16,7 +16,7 @@ validate_MAML(MAML, schema = 'get')
 Character scalar or List; the MAML we want to validate against the official schema.
 }
   \item{schema}{
-Character scalar, if 'get' then it will use the default MAML schema that is included with the package, otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
+Character scalar, if 'v1.x'  then it will use the 'v1.x' MAML schema that is included with the package (current options: v1.0, v1.1). Otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
 }
 }
 \details{
