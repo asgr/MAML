@@ -1,7 +1,7 @@
 Package: MAML
 Type: Package
 Title: Metadata with YAML Tools
-Version: 1.1
+Version: 1.11
 Authors@R: c(
     person(
       "Aaron", "Robotham",
