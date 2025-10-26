@@ -44,7 +44,8 @@ validate_MAML = function(MAML, schema='v1.0'){
 
   for(i in MAML$fields){
     if(!is.null(i$ucd)){
-      if(!valid_UCD$check_ucd(i$ucd)){
+      ucd_string <- paste(i$ucd, collapse = ";")
+      if(!valid_UCD$check_ucd(ucd_string)){
         message('Failing UCD name validation!')
         message('Non valid UCDs: ', paste(i$ucd[!(i$ucd %in% valid_UCD)], collapse=' '))
       }
