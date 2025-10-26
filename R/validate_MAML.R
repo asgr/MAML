@@ -40,11 +40,11 @@ validate_MAML = function(MAML, schema='v1.0'){
     return(current_valid)
   }
 
-  valid_UCD = read.table(system.file('extdata', 'valid_UCD_v1p6.dat', package = "MAML"))[,1]
+  valid_UCD = UCDWords$new()
 
   for(i in MAML$fields){
     if(!is.null(i$ucd)){
-      if(any(!(i$ucd %in% valid_UCD))){
+      if(!valid_UCD$check_ucd(i$ucd)){
         message('Failing UCD name validation!')
         message('Non valid UCDs: ', paste(i$ucd[!(i$ucd %in% valid_UCD)], collapse=' '))
       }
@@ -52,7 +52,7 @@ validate_MAML = function(MAML, schema='v1.0'){
   }
 
   message('Passing UCD name validation!')
-  
+
   message("Ain't nothing but MAML!")
 
   return(current_valid)
