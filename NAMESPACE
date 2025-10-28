@@ -7,5 +7,6 @@ import(data.table)
 import(bit64)
 import(jsonlite)
 import(jsonvalidate)
+import(R6)
 
 importFrom("utils", "read.table")
