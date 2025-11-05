@@ -119,10 +119,6 @@ make_MAML = function(data, output='MAML', input = 'table',
         if(is.null(qc_null_loc)){
           qc_null_loc = qc_null
         }
-      }else{
-        qc_min_loc = NULL
-        qc_max_loc = NULL
-        qc_null_loc = NULL
       }
 
       temp_field = list(
