@@ -64,7 +64,7 @@ make_MAML = function(data, output='MAML', input = 'table',
               #Concat info blocks together (space sep):
               if(is.null(info)){
                 info = lookup[[j]]$info
-              }else if(all(grepl(lookup[[j]]$info, info, fixed = TRUE) == FALSE)){
+              }else if(all(isFALSE(grepl(lookup[[j]]$info, info, fixed = TRUE)))){
                 #check the new info is unique (otherwise do not add)
                 info = c(info, lookup[[j]]$info)
               }
