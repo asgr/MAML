@@ -28,7 +28,9 @@ make_MAML = function(data, output='MAML', input = 'table',
       info = NULL
       ucd = NULL
       array_size = NULL
-      qc = NULL
+      qc_min_loc = NULL
+      qc_max_loc = NULL
+      qc_null_loc = NULL
 
       data_type = if(is.null(temp_schema)){
         class(data[[i]])
@@ -93,7 +95,8 @@ make_MAML = function(data, output='MAML', input = 'table',
       }
 
       if('qc' %in% fields_optional & is.data.frame(data)){
-        if(is.null(lookup[[j]]$qc_min)){
+        if(is.null(qc_min_loc)){
+          print(lookup[[j]])
           qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
           if(is.integer64(qc_min_loc)){
             if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
@@ -104,7 +107,7 @@ make_MAML = function(data, output='MAML', input = 'table',
           }
         }
 
-        if(is.null(lookup[[j]]$qc_min)){
+        if(is.null(qc_max_loc)){
           qc_max_loc = max(data[[col_names[i]]], na.rm=TRUE)
           if(is.integer64(qc_max_loc)){
             if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
@@ -115,7 +118,7 @@ make_MAML = function(data, output='MAML', input = 'table',
           }
         }
 
-        if(is.null(lookup[[j]]$qc_null)){
+        if(is.null(qc_null_loc)){
           qc_null_loc = qc_null
         }
       }else{
