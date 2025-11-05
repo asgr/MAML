@@ -96,7 +96,6 @@ make_MAML = function(data, output='MAML', input = 'table',
 
       if('qc' %in% fields_optional & is.data.frame(data)){
         if(is.null(qc_min_loc)){
-          print(lookup[[j]])
           qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
           if(is.integer64(qc_min_loc)){
             if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
