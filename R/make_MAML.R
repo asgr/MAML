@@ -58,6 +58,7 @@ make_MAML = function(data, output='MAML', input = 'table',
               #Take the first unit that matches (adding more don't make sense)
               unit = lookup[[j]]$unit
             }
+
             if(!is.null(lookup[[j]]$info)){
               #Concat info blocks together (space sep):
               if(is.null(info)){
@@ -67,38 +68,60 @@ make_MAML = function(data, output='MAML', input = 'table',
                 info = c(info, lookup[[j]]$info)
               }
             }
+
             if(!is.null(lookup[[j]]$ucd)){
               #Concat ucd together:
               ucd = c(ucd, lookup[[j]]$ucd)
+            }
+
+            if(!is.null(lookup[[j]]$qc_min)){
+              #Take first matching qc_min:
+              qc_min_loc = lookup[[j]]$qc_min
+            }
+
+            if(!is.null(lookup[[j]]$qc_max)){
+              #Take first matching qc_max:
+              qc_max_loc = lookup[[j]]$qc_max
+            }
+
+            if(!is.null(lookup[[j]]$qc_null)){
+              #Take first matching qc_null:
+              qc_null_loc = lookup[[j]]$qc_null
             }
           }
         }
       }
 
       if('qc' %in% fields_optional & is.data.frame(data)){
-        qc_min = min(data[[col_names[i]]], na.rm=TRUE)
-        if(is.integer64(qc_min)){
-          if(qc_min > -.Machine$integer.max & qc_min < .Machine$integer.max){
-            qc_min = as.integer(qc_min)
-          }else{
-            qc_min = as.character(qc_min)
+        if(is.null(lookup[[j]]$qc_min)){
+          qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
+          if(is.integer64(qc_min_loc)){
+            if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
+              qc_min_loc = as.integer(qc_min_loc)
+            }else{
+              qc_min_loc = as.character(qc_min_loc)
+            }
           }
         }
 
-        qc_max = max(data[[col_names[i]]], na.rm=TRUE)
-        if(is.integer64(qc_max)){
-          if(qc_max > -.Machine$integer.max & qc_max < .Machine$integer.max){
-            qc_max = as.integer(qc_max)
-          }else{
-            qc_max = as.character(qc_max)
+        if(is.null(lookup[[j]]$qc_min)){
+          qc_max_loc = max(data[[col_names[i]]], na.rm=TRUE)
+          if(is.integer64(qc_max_loc)){
+            if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
+              qc_max_loc = as.integer(qc_max_loc)
+            }else{
+              qc_max_loc = as.character(qc_max_loc)
+            }
           }
         }
 
-        qc_null = qc_null
+        if(is.null(lookup[[j]]$qc_null)){
+          qc_null_loc = qc_null
+        }
       }else{
-        qc_min = NULL
-        qc_max = NULL
-        qc_null = NULL
+        qc_min_loc = NULL
+        qc_max_loc = NULL
+        qc_null_loc = NULL
       }
 
       temp_field = list(
@@ -109,9 +132,9 @@ make_MAML = function(data, output='MAML', input = 'table',
         data_type = data_type,
         array_size = array_size,
         qc = list(
-          min = qc_min,
-          max = qc_max,
-          miss = qc_null
+          min = qc_min_loc,
+          max = qc_max_loc,
+          miss = qc_null_loc
         )
       )
 
