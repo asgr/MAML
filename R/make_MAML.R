@@ -4,7 +4,7 @@ make_MAML = function(data, output='MAML', input = 'table',
 
   i = j = NULL
 
-  foreach(j = 1:length(lookup))%do%{
+  for(j in seq_along(lookup)){
     match_by = lookup[[j]]$match_by
 
     if(is.null(match_by)){
@@ -52,9 +52,8 @@ make_MAML = function(data, output='MAML', input = 'table',
       }
 
       if(!is.null(lookup)){
-        foreach(j = 1:length(lookup))%do%{
+        foreach(j = seq_along(lookup))%do%{
           check = grepl(lookup[[j]]$pattern, col_names[i], ignore.case = isTRUE(lookup[[j]]$ignore_case))
-
           if(check){
             if(is.null(unit) & !is.null(lookup[[j]]$unit)){
               #Take the first unit that matches (adding more don't make sense)
@@ -65,7 +64,7 @@ make_MAML = function(data, output='MAML', input = 'table',
               #Concat info blocks together (space sep):
               if(is.null(info)){
                 info = lookup[[j]]$info
-              }else if(grepl(lookup[[j]]$info, info, fixed = TRUE) == FALSE){
+              }else if(all(grepl(lookup[[j]]$info, info, fixed = TRUE) == FALSE)){
                 #check the new info is unique (otherwise do not add)
                 info = c(info, lookup[[j]]$info)
               }
@@ -139,7 +138,6 @@ make_MAML = function(data, output='MAML', input = 'table',
           miss = qc_null_loc
         )
       )
-
       return(temp_field[names(temp_field) %in% c('name', 'data_type', fields_optional)])
     }
   }else if(input == 'meta_col'){
