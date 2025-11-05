@@ -52,6 +52,8 @@ validate_MAML = function(MAML, schema='v1.0'){
   }
 
   message('Passing UCD name validation!')
+  
+  message("Ain't nothing but MAML!")
 
   return(current_valid)
 }
