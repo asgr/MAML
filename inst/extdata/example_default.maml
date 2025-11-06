@@ -42,8 +42,8 @@ fields:
   data_type: string
   array_size:
   qc:
-    min: A
-    max: E
+    min:
+    max:
     miss: 'Null'
 - name: Date
   unit:
@@ -52,8 +52,8 @@ fields:
   data_type: string
   array_size:
   qc:
-    min: '2025-06-13'
-    max: '2025-09-03'
+    min:
+    max:
     miss: 'Null'
 - name: Flag
   unit:

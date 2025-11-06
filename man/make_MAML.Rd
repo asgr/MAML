@@ -8,7 +8,7 @@
 \usage{
 make_MAML(data, output = 'MAML', input = 'table',
   fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
-  lookup = NULL, datamap = NULL, qc_null = 'Null', ...)
+  lookup = NULL, datamap = NULL, qc_min = 'get', qc_max = 'get', qc_null = 'Null', ...)
 }
 \arguments{
   \item{data}{
@@ -28,6 +28,12 @@ List; optional lookup matching list to create default entries in the MAML. See E
 }
   \item{datamap}{
 List; optional data type matching list. See Examples.
+}
+  \item{qc_min}{
+Scalar; if 'get' then will find the min of the column for qc_min, otherwise the output will inherit the value of \option{qc_min}.
+}
+  \item{qc_max}{
+Scalar; if 'get' then will find the max of the column for qc_max, otherwise the output will inherit the value of \option{qc_min}.
 }
   \item{qc_null}{
 Scalar; what to specify for the missing data type of the column. This likely depends on the file format being used, but for Parquet it is probably best to set as the default ('Null').
