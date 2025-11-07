@@ -1,5 +1,6 @@
 \name{validate_MAML}
 \alias{validate_MAML}
+\alias{ucd_validate}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Validate a MAML
@@ -9,6 +10,7 @@ Can validate wither a MAML string or list object aginst the official schema JSON
 }
 \usage{
 validate_MAML(MAML, schema = 'v1.0')
+ucd_validate(UCDs, valid_UCD = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +19,12 @@ Character scalar or List; the MAML we want to validate against the official sche
 }
   \item{schema}{
 Character scalar, if 'v1.x'  then it will use the 'v1.x' MAML schema that is included with the package (current options: v1.0, v1.1). Otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
+}
+  \item{UCDs}{
+Character vector; UCDs to be checked. These should be in the correct primary (first) and secondard (later) order.
+}
+  \item{valid_UCD}{
+Data.frame; a table of UCDs to validate against. If NULL then this is loaded from the valid_UCD_v1.6_extra package default. This is really here for speed so we can load the table once externally when running \code{ucd_validate} lots of times on a large MAML in \code{validate_MAML}. For interactive uses probably just leave as NULL.
 }
 }
 \details{

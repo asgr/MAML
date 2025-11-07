@@ -37,23 +37,64 @@ validate_MAML = function(MAML, schema='v1.0'){
     message('Passing JSON schema validation!')
   }else{
     message('Failing JSON schema validation!')
-    return(current_valid)
+    return(FALSE)
   }
 
-  valid_UCD = read.table(system.file('extdata', 'valid_UCD_v1p6.dat', package = "MAML"))[,1]
+  valid_UCD = read.table(system.file('extdata', 'valid_UCD_v1p6_extra.dat', package = "MAML"),
+                         sep='|', comment.char = '#', strip.white = TRUE, col.names = c("letter", "ucd", "description"))
 
-  for(i in MAML$fields){
-    if(!is.null(i$ucd)){
-      if(any(!(i$ucd %in% valid_UCD))){
+  for(i in seq_along(MAML$fields)){
+    UCDs = MAML$fields[[i]]$ucd
+    if(!is.null(UCDs)){
+      if(isFALSE(ucd_validate(UCDs, valid_UCD))){
         message('Failing UCD name validation!')
-        message('Non valid UCDs: ', paste(i$ucd[!(i$ucd %in% valid_UCD)], collapse=' '))
+        return(FALSE)
       }
     }
   }
 
   message('Passing UCD name validation!')
-  
+
   message("Ain't nothing but MAML!")
 
-  return(current_valid)
+  return(TRUE)
+}
+
+ucd_validate = function(UCDs, valid_UCD = NULL){
+
+  if(is.null(valid_UCD)){
+    valid_UCD = read.table(system.file('extdata', 'valid_UCD_v1p6_extra.dat', package = "MAML"),
+                           sep='|', comment.char = '#', strip.white = TRUE, col.names = c("letter", "ucd", "description"))
+  }
+
+  primary = tolower(valid_UCD[valid_UCD$letter != 'S','ucd'])
+  secondary = tolower(valid_UCD[valid_UCD$letter != 'P','ucd'])
+
+  ucd_loc = tolower(UCDs)
+
+  passing = TRUE
+
+  if(any(!(ucd_loc %in% valid_UCD$ucd))){
+    message('Failing UCD name validation!')
+    message('Non valid UCDs: ', paste(ucd_loc[!(ucd_loc %in% valid_UCD$ucd)], collapse=' '))
+    passing = FALSE
+  }
+
+  for(j in seq_along(ucd_loc)){
+    if(j == 1){
+      if(!(ucd_loc[j] %in% primary)){
+        message('Failing UCD name validation!')
+        message('Non valid primary UCD: ', ucd_loc[j])
+        passing = FALSE
+      }
+    }else{
+      if(!(ucd_loc[j] %in% secondary)){
+        message('Failing UCD name validation!')
+        message('Non valid secondary UCD: ', ucd_loc[j])
+        passing = FALSE
+      }
+    }
+  }
+
+  return(passing)
 }
