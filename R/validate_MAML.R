@@ -72,6 +72,10 @@ ucd_validate = function(UCDs, valid_UCD = NULL){
 
   #ucd_loc = tolower(UCDs)
 
+  if(length(UCDs) == 1){
+    UCDs = strsplit(UCDs, ';')[[1]]
+  }
+
   passing = TRUE
 
   if(any(!(UCDs %in% valid_UCD$ucd))){

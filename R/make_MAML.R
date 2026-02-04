@@ -1,6 +1,7 @@
 make_MAML = function(data, output='MAML', input = 'table',
                      fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
-                     lookup = NULL, datamap = NULL, qc_min='get', qc_max='get', qc_null = 'Null', ...){
+                     lookup = NULL, datamap = NULL, qc_min='get', qc_max='get', qc_null='Null',
+                     ucd_collapse = FALSE, ...){
 
   i = j = NULL
 
@@ -133,6 +134,13 @@ make_MAML = function(data, output='MAML', input = 'table',
         }
       }
 
+      ucd = unique(ucd)
+
+      if(length(ucd) > 0){
+        if(ucd_collapse){
+          ucd = paste(ucd, collapse=';')
+        }
+      }
       temp_field = list(
         name = col_names[i],
         unit = unit,

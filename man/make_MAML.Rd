@@ -8,7 +8,8 @@
 \usage{
 make_MAML(data, output = 'MAML', input = 'table',
   fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
-  lookup = NULL, datamap = NULL, qc_min = 'get', qc_max = 'get', qc_null = 'Null', ...)
+  lookup = NULL, datamap = NULL, qc_min = 'get', qc_max = 'get', qc_null = 'Null',
+  ucd_collapse = FALSE, ...)
 }
 \arguments{
   \item{data}{
@@ -37,6 +38,9 @@ Scalar; if 'get' then will find the max of the column for qc_max, otherwise the 
 }
   \item{qc_null}{
 Scalar; what to specify for the missing data type of the column. This likely depends on the file format being used, but for Parquet it is probably best to set as the default ('Null').
+}
+  \item{ucd_collapse}{
+Logical; should the per field UCD output be collapsed to IVOA standard semi-colon separated field, so the YAML vector [meta.id, meta.main] would instead be 'meta.id;meta.main' scalar. This is perhaps useful when mostly interacting with software that expects IVOA format UCDs.
 }
   \item{\dots}{
 Modify default entries (see Examples).
@@ -94,6 +98,14 @@ lookup = read_yaml(system.file('extdata', 'lookup.yaml', package = "MAML"))
 cat(as.yaml(lookup))
 
 cat(make_MAML(df, lookup=lookup))
+
+#For IVOA style UCD entries:
+cat(make_MAML(df, lookup=lookup, ucd_collapse=TRUE))
+
+#The IVOA mode also creates nicer data.frame outputs:
+meta2 = rbindlist(make_MAML(df, lookup=lookup, ucd_collapse=TRUE, output='list',
+  fields_optional = c('unit', 'ucd'))$fields)
+print(meta2)
 
 #load datamap to target a set of datatypes:
 datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
