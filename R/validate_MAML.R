@@ -37,6 +37,7 @@ validate_MAML = function(MAML, schema='v1.0'){
     message('Passing JSON schema validation!')
   }else{
     message('Failing JSON schema validation!')
+    print(attr(current_valid, 'errors'))
     return(FALSE)
   }
 
