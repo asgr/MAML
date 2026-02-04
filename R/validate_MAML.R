@@ -67,30 +67,30 @@ ucd_validate = function(UCDs, valid_UCD = NULL){
                            sep='|', comment.char = '#', strip.white = TRUE, col.names = c("letter", "ucd", "description"))
   }
 
-  primary = tolower(valid_UCD[valid_UCD$letter != 'S','ucd'])
-  secondary = tolower(valid_UCD[valid_UCD$letter != 'P','ucd'])
+  primary = valid_UCD[valid_UCD$letter != 'S','ucd']
+  secondary = valid_UCD[valid_UCD$letter != 'P','ucd']
 
-  ucd_loc = tolower(UCDs)
+  #ucd_loc = tolower(UCDs)
 
   passing = TRUE
 
-  if(any(!(ucd_loc %in% valid_UCD$ucd))){
+  if(any(!(UCDs %in% valid_UCD$ucd))){
     message('Failing UCD name validation!')
-    message('Non valid UCDs: ', paste(ucd_loc[!(ucd_loc %in% valid_UCD$ucd)], collapse=' '))
+    message('Non valid UCDs: ', paste(UCDs[!(UCDs %in% valid_UCD$ucd)], collapse=' '))
     passing = FALSE
   }
 
-  for(j in seq_along(ucd_loc)){
+  for(j in seq_along(UCDs)){
     if(j == 1){
-      if(!(ucd_loc[j] %in% primary)){
+      if(!(UCDs[j] %in% primary)){
         message('Failing UCD name validation!')
-        message('Non valid primary UCD: ', ucd_loc[j])
+        message('Non valid primary UCD: ', UCDs[j])
         passing = FALSE
       }
     }else{
-      if(!(ucd_loc[j] %in% secondary)){
+      if(!(UCDs[j] %in% secondary)){
         message('Failing UCD name validation!')
-        message('Non valid secondary UCD: ', ucd_loc[j])
+        message('Non valid secondary UCD: ', UCDs[j])
         passing = FALSE
       }
     }
