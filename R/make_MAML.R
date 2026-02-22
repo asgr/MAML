@@ -50,6 +50,8 @@ make_MAML = function(data, output='MAML', input = 'table',
         if(data_type == 'missing'){
           stop('Unrecognised data type: ', temp_data_type)
         }
+      }else{
+        data_type = switch(data_type, 'bool' = 'boolean', 'double' = 'float64', data_type)
       }
 
       if(!is.null(lookup)){
@@ -96,36 +98,32 @@ make_MAML = function(data, output='MAML', input = 'table',
 
       if('qc' %in% fields_optional & is.data.frame(data)){
         if(is.null(qc_min_loc)){
-          if(!is.character(data[[col_names[i]]])){
-            if(qc_min == 'get'){
-              qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
-              if(is.integer64(qc_min_loc)){
-                if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
-                  qc_min_loc = as.integer(qc_min_loc)
-                }else{
-                  qc_min_loc = as.character(qc_min_loc)
-                }
+          if(qc_min == 'get'){
+            qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
+            if(is.integer64(qc_min_loc)){
+              if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
+                qc_min_loc = as.integer(qc_min_loc)
+              }else{
+                qc_min_loc = as.character(qc_min_loc)
               }
-            }else{
-              qc_min_loc = qc_min
             }
+          }else{
+            qc_min_loc = qc_min
           }
         }
 
         if(is.null(qc_max_loc)){
-          if(!is.character(data[[col_names[i]]])){
-            if(qc_max == 'get'){
-              qc_max_loc = max(data[[col_names[i]]], na.rm=TRUE)
-              if(is.integer64(qc_max_loc)){
-                if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
-                  qc_max_loc = as.integer(qc_max_loc)
-                }else{
-                  qc_max_loc = as.character(qc_max_loc)
-                }
+          if(qc_max == 'get'){
+            qc_max_loc = max(data[[col_names[i]]], na.rm=TRUE)
+            if(is.integer64(qc_max_loc)){
+              if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
+                qc_max_loc = as.integer(qc_max_loc)
+              }else{
+                qc_max_loc = as.character(qc_max_loc)
               }
-            }else{
-              qc_max_loc = qc_max
             }
+          }else{
+            qc_max_loc = qc_max
           }
         }
 
