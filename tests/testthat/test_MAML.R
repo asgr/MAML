@@ -29,6 +29,11 @@ expect_true(validate_MAML(new_datamap))
 expect_true(validate_MAML(new_lookup_datamap))
 expect_true(validate_MAML(new_fields_lookup_datamap))
 
+# UCD checks:
+expect_true(ucd_validate("arith"))
+expect_false(ucd_validate("arith.diff"))
+expect_true(ucd_validate(c("arith", "arith.diff")))
+
 # Check if the newly generated MAML result is equal to the expected
 expect_equal(example_default, new_default)
 expect_equal(example_lookup, new_lookup)

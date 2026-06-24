@@ -2,6 +2,8 @@
   match_by: suffix
   ignore_case: FALSE
   ucd: [meta.id, meta.main]
+  qc_min: 1
+  qc_max: 10
 - pattern: RA
   match_by: prefix
   ignore_case: FALSE
