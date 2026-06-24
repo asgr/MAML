@@ -16,7 +16,7 @@ write_MAML = function(MAML, filename='temp.maml', table=NULL, input='MAML', outp
   }
 
   if(tolower(input) == 'maml' & tolower(output) == 'maml'){
-    cat(MAML, file=file)
+    cat(MAML, file=filename)
   }else if(tolower(input) == 'maml' & tolower(output) == 'parquet'){
     table = arrow::as_arrow_table(table)
     table$metadata$maml = MAML
