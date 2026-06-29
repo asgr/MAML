@@ -9,7 +9,7 @@
 make_MAML(data, output = 'MAML', input = 'table',
   fields_optional = c('unit', 'info', 'ucd', 'array_size', 'col_size', 'qc'),
   lookup = NULL, datamap = NULL, qc_min = 'get', qc_max = 'get', qc_null = 'Null',
-  ucd_collapse = FALSE, MAML_version = 1.0, ...)
+  ucd_collapse = FALSE, MAML_version = 1.0, vec_col = NULL, ...)
 }
 \arguments{
   \item{data}{
@@ -44,6 +44,9 @@ Logical; should the per field UCD output be collapsed to IVOA standard semi-colo
 }
   \item{MAML_version}{
 Numeric scalar; specify the version of MAML to target. This is mostly a convenience, since it is still a requirement that the user makes sures the additional entries (via \dots) are compatible with the MAML version. A special case is \option{MAML_version} = 1.2, since that will create the extra field argument 'col_size' which will specify the number of vector elements in each cell of the column (i.e. col_size > 1 means we have a vector column).
+}
+  \item{vec_col}{
+Character vector; used to specify known vector columns when using \option{MAML_version} = 1.2. This is only required when the vector columns are a series of scalar columns with names like example_1, example_2 ... example_N etc, where the \option{vec_col} name is the part before the column number specifier ('example' in this case). If the input \option{data} is already structured as vector columns internally then this should not be specified (see Examples).
 }
   \item{\dots}{
 Modify default entries (see Examples).
@@ -116,4 +119,24 @@ datamap = read_yaml(system.file('extdata', 'datamap.yaml', package = "MAML"))
 cat(as.yaml(datamap))
 
 cat(make_MAML(df, datamap=datamap))
+
+test_vec_dt1 = data.frame(
+  ID=1:10,
+  test = I(lapply(rep(2,10),runif)),
+  filler = 11:20,
+  other = I(lapply(rep(3,10),runif)),
+  end = 21:30
+)
+
+cat(make_MAML(test_vec_dt1, MAML_version=1.2))
+
+test_vec_dt2 = data.frame(
+  ID = 1:10,
+  test_1 = runif(10), test_2 = runif(10),
+  filler = 11:20,
+  other_1 = runif(10), other_2 = runif(10), other_3 = runif(10),
+  end = 21:30
+)
+
+cat(make_MAML(test_vec_dt2, MAML_version=1.2, vec_col=c('test', 'other')))
 }

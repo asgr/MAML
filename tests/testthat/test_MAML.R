@@ -47,11 +47,37 @@ df_veccol = read_parquet(system.file('extdata', 'example_veccol_maml.parquet', p
 # Check we see a vector column (should be class AsIs)
 expect_true(inherits(df_veccol$spec, 'AsIs'))
 
-new_veccol = make_MAML(df_veccol, date='2025-09-01', MAML_version=1.2)
+maml_veccol1 = make_MAML(df_veccol, MAML_version=1.2)
 
 # Check if the MAML passes the current validator
-expect_true(validate_MAML(new_veccol, MAML_version = 1.2))
+expect_true(validate_MAML(maml_veccol1, MAML_version = 1.2))
 
 #Check it fails the others:
-expect_false(validate_MAML(new_veccol, MAML_version = 1.0))
-expect_false(validate_MAML(new_veccol, MAML_version = 1.1))
+expect_false(validate_MAML(maml_veccol1, MAML_version = 1.0))
+expect_false(validate_MAML(maml_veccol1, MAML_version = 1.1))
+
+test_vec_dt1 = data.frame(
+  ID=1:10,
+  test = I(lapply(rep(2,10),runif)),
+  filler = 11:20,
+  other = I(lapply(rep(3,10),runif)),
+  end = 21:30
+)
+
+maml_veccol2 = make_MAML(test_vec_dt1, MAML_version=1.2)
+
+# Check if the MAML passes the current validator
+expect_true(validate_MAML(maml_veccol2, MAML_version = 1.2))
+
+test_vec_dt2 = data.frame(
+  ID = 1:10,
+  test_1 = runif(10), test_2 = runif(10),
+  filler = 11:20,
+  other_1 = runif(10), other_2 = runif(10), other_3 = runif(10),
+  end = 21:30
+)
+
+maml_veccol3 = make_MAML(test_vec_dt2, MAML_version=1.2, vec_col=c('test', 'other'))
+
+# Check if the MAML passes the current validator
+expect_true(validate_MAML(maml_veccol3, MAML_version = 1.2))

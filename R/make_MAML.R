@@ -1,7 +1,12 @@
+.is_adjacent <- function(x) {
+  x = sort(unique(x))  # remove duplicates just in case
+  all(diff(x) == 1)
+}
+
 make_MAML = function(data, output='MAML', input = 'table',
                      fields_optional = c('unit', 'info', 'ucd', 'array_size', 'col_size', 'qc'),
                      lookup = NULL, datamap = NULL, qc_min='get', qc_max='get', qc_null='Null',
-                     ucd_collapse = FALSE, MAML_version = 1.0, ...){
+                     ucd_collapse = FALSE, MAML_version = 1.0, vec_col = NULL, ...){
 
   i = j = NULL
 
@@ -24,7 +29,31 @@ make_MAML = function(data, output='MAML', input = 'table',
   if(input == 'table'){
     temp_schema = arrow::schema(data)$fields
     col_names = names(data)
-    fields = foreach(i = 1:dim(data)[2])%do%{
+    col_sel = 1:length(col_names)
+    col_sizes = rep(NA, length(col_names))
+
+    if(MAML_version == 1.2 & !is.null(vec_col)){
+      rem_sel = {}
+
+      for(col_name in vec_col){
+        sel = grep(paste0('^', col_name), col_names)
+
+        if(!.is_adjacent(sel)){
+          stop('Not all columns in ',col_name,' are adjacent!')
+        }
+
+        if(length(sel) > 1){
+          rem_sel = c(rem_sel, sel[2:length(sel)])
+        }
+
+        col_names[sel[1]] = paste0(col_name,'_icol')
+        col_sizes[sel[1]] = length(sel)
+      }
+
+      col_sel = col_sel[!col_sel %in% rem_sel]
+    }
+
+    fields = foreach(i = col_sel)%do%{
       unit = NULL
       info = NULL
       ucd = NULL
@@ -103,9 +132,9 @@ make_MAML = function(data, output='MAML', input = 'table',
 
       if('qc' %in% fields_optional & is.data.frame(data)){
         if(is.null(qc_min_loc)){
-          if(!is.character(data[[col_names[i]]])){
+          if(!is.character(data[[i]])){
             if(qc_min == 'get'){
-              qc_min_loc = min(unlist(data[[col_names[i]]]), na.rm=TRUE)
+              qc_min_loc = min(unlist(data[[i]]), na.rm=TRUE)
               if(is.integer64(qc_min_loc)){
                 if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
                   qc_min_loc = as.integer(qc_min_loc)
@@ -120,9 +149,9 @@ make_MAML = function(data, output='MAML', input = 'table',
         }
 
         if(is.null(qc_max_loc)){
-          if(!is.character(data[[col_names[i]]])){
+          if(!is.character(data[[i]])){
             if(qc_max == 'get'){
-              qc_max_loc = max(unlist(data[[col_names[i]]]), na.rm=TRUE)
+              qc_max_loc = max(unlist(data[[i]]), na.rm=TRUE)
               if(is.integer64(qc_max_loc)){
                 if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
                   qc_max_loc = as.integer(qc_max_loc)
@@ -170,7 +199,7 @@ make_MAML = function(data, output='MAML', input = 'table',
           ucd = unique(ucd),
           data_type = data_type,
           array_size = array_size,
-          col_size = length(data[[col_names[i]]][[1]]),
+          col_size = if(is.na(col_sizes[i])){length(data[[col_names[i]]][[1]])}else{col_sizes[i]},
           qc = list(
             min = qc_min_loc,
             max = qc_max_loc,
