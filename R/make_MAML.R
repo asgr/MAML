@@ -55,6 +55,8 @@ make_MAML = function(data, output='MAML', input = 'table',
         if(data_type == 'missing'){
           stop('Unrecognised data type: ', temp_data_type)
         }
+      }else{
+        data_type = switch(data_type, 'bool' = 'boolean', 'double' = 'float64', data_type)
       }
 
       if(!is.null(lookup)){
