@@ -1,7 +1,7 @@
 make_MAML = function(data, output='MAML', input = 'table',
-                     fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
+                     fields_optional = c('unit', 'info', 'ucd', 'array_size', 'col_size', 'qc'),
                      lookup = NULL, datamap = NULL, qc_min='get', qc_max='get', qc_null='Null',
-                     ucd_collapse = FALSE, ...){
+                     ucd_collapse = FALSE, MAML_version = 1.0, ...){
 
   i = j = NULL
 
@@ -34,9 +34,14 @@ make_MAML = function(data, output='MAML', input = 'table',
       qc_null_loc = NULL
 
       data_type = if(is.null(temp_schema)){
-        class(data[[i]])
+        class(unlist(data[[i]]))
       }else{
-        temp_schema[[i]]$type$ToString()
+        if(!is.null(arrow::schema(data)$fields[[i]]$type$value_field$type)){
+          #this will catch vector fields
+          arrow::schema(data)$fields[[i]]$type$value_field$type$ToString()
+        }else{
+          temp_schema[[i]]$type$ToString()
+        }
       }
 
       if(!is.null(datamap)){
@@ -98,7 +103,7 @@ make_MAML = function(data, output='MAML', input = 'table',
         if(is.null(qc_min_loc)){
           if(!is.character(data[[col_names[i]]])){
             if(qc_min == 'get'){
-              qc_min_loc = min(data[[col_names[i]]], na.rm=TRUE)
+              qc_min_loc = min(unlist(data[[col_names[i]]]), na.rm=TRUE)
               if(is.integer64(qc_min_loc)){
                 if(qc_min_loc > -.Machine$integer.max & qc_min_loc < .Machine$integer.max){
                   qc_min_loc = as.integer(qc_min_loc)
@@ -115,7 +120,7 @@ make_MAML = function(data, output='MAML', input = 'table',
         if(is.null(qc_max_loc)){
           if(!is.character(data[[col_names[i]]])){
             if(qc_max == 'get'){
-              qc_max_loc = max(data[[col_names[i]]], na.rm=TRUE)
+              qc_max_loc = max(unlist(data[[col_names[i]]]), na.rm=TRUE)
               if(is.integer64(qc_max_loc)){
                 if(qc_max_loc > -.Machine$integer.max & qc_max_loc < .Machine$integer.max){
                   qc_max_loc = as.integer(qc_max_loc)
@@ -141,19 +146,36 @@ make_MAML = function(data, output='MAML', input = 'table',
           ucd = paste(ucd, collapse=';')
         }
       }
-      temp_field = list(
-        name = col_names[i],
-        unit = unit,
-        info = paste(info, collapse=' '),
-        ucd = unique(ucd),
-        data_type = data_type,
-        array_size = array_size,
-        qc = list(
-          min = qc_min_loc,
-          max = qc_max_loc,
-          miss = qc_null_loc
+      if(MAML_version <= 1.1){
+        temp_field = list(
+          name = col_names[i],
+          unit = unit,
+          info = paste(info, collapse=' '),
+          ucd = unique(ucd),
+          data_type = data_type,
+          array_size = array_size,
+          qc = list(
+            min = qc_min_loc,
+            max = qc_max_loc,
+            miss = qc_null_loc
+          )
         )
-      )
+      }else{
+        temp_field = list(
+          name = col_names[i],
+          unit = unit,
+          info = paste(info, collapse=' '),
+          ucd = unique(ucd),
+          data_type = data_type,
+          array_size = array_size,
+          col_size = length(data[[col_names[i]]][[1]]),
+          qc = list(
+            min = qc_min_loc,
+            max = qc_max_loc,
+            miss = qc_null_loc
+          )
+        )
+      }
       return(temp_field[names(temp_field) %in% c('name', 'data_type', fields_optional)])
     }
   }else if(input == 'meta_col'){
@@ -197,7 +219,7 @@ make_MAML = function(data, output='MAML', input = 'table',
       "Optional keyword tag",
       "..."
     ),
-    MAML_version = 1.0,
+    MAML_version = MAML_version,
     fields = fields
   )
 

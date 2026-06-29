@@ -7,9 +7,9 @@
 }
 \usage{
 make_MAML(data, output = 'MAML', input = 'table',
-  fields_optional = c('unit', 'info', 'ucd', 'array_size', 'qc'),
+  fields_optional = c('unit', 'info', 'ucd', 'array_size', 'col_size', 'qc'),
   lookup = NULL, datamap = NULL, qc_min = 'get', qc_max = 'get', qc_null = 'Null',
-  ucd_collapse = FALSE, ...)
+  ucd_collapse = FALSE, MAML_version = 1.0, ...)
 }
 \arguments{
   \item{data}{
@@ -41,6 +41,9 @@ Scalar; what to specify for the missing data type of the column. This likely dep
 }
   \item{ucd_collapse}{
 Logical; should the per field UCD output be collapsed to IVOA standard semi-colon separated field, so the YAML vector [meta.id, meta.main] would instead be 'meta.id;meta.main' scalar. This is perhaps useful when mostly interacting with software that expects IVOA format UCDs.
+}
+  \item{MAML_version}{
+Numeric scalar; specify the version of MAML to target. This is mostly a convenience, since it is still a requirement that the user makes sures the additional entries (via \dots) are compatible with the MAML version. A special case is \option{MAML_version} = 1.2, since that will create the extra field argument 'col_size' which will specify the number of vector elements in each cell of the column (i.e. col_size > 1 means we have a vector column).
 }
   \item{\dots}{
 Modify default entries (see Examples).

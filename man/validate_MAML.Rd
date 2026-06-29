@@ -9,7 +9,7 @@ Validate a MAML
 Can validate wither a MAML string or list object aginst the official schema JSON specification.
 }
 \usage{
-validate_MAML(MAML, schema = 'v1.0')
+validate_MAML(MAML, MAML_version = 1.0)
 ucd_validate(UCDs, valid_UCD = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -17,8 +17,8 @@ ucd_validate(UCDs, valid_UCD = NULL)
   \item{MAML}{
 Character scalar or List; the MAML we want to validate against the official schema.
 }
-  \item{schema}{
-Character scalar, if 'v1.x'  then it will use the 'v1.x' MAML schema that is included with the package (current options: v1.0, v1.1). Otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
+  \item{MAML_version}{
+Numeric scalar, if 1.x  then it will use the 'v1.x' MAML schema that is included with the package (current options: v1.0, v1.1, v1.2). Otherwise the string should be a valid schema you wish to test against. In the latter case, this should probably be a stricter version of the default (see Examples).
 }
   \item{UCDs}{
 Character vector; UCDs to be checked. These should be in the correct primary (first) and secondard (later) order.

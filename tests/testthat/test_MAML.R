@@ -40,3 +40,18 @@ expect_equal(example_lookup, new_lookup)
 expect_equal(example_datamap, new_datamap)
 expect_equal(example_lookup_datamap, new_lookup_datamap)
 expect_equal(example_fields_lookup_datamap, new_fields_lookup_datamap)
+
+# Create the MAML output from target vector column parquet
+df_veccol = read_parquet(system.file('extdata', 'example_veccol_maml.parquet', package = "MAML"))
+
+# Check we see a vector column (should be class AsIs)
+expect_true(inherits(df_veccol$spec, 'AsIs'))
+
+new_veccol = make_MAML(df_veccol, date='2025-09-01', MAML_version=1.2)
+
+# Check if the MAML passes the current validator
+expect_true(validate_MAML(new_veccol, MAML_version = 1.2))
+
+#Check it fails the others:
+expect_false(validate_MAML(new_veccol, MAML_version = 1.0))
+expect_false(validate_MAML(new_veccol, MAML_version = 1.1))
