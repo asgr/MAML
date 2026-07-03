@@ -160,3 +160,30 @@ maml_multi_ucd = maml_from_example
 maml_multi_ucd$fields[[1]]$ucd = c("meta.id", "meta.main")
 vot_multi = MAML_to_VOTable(maml_multi_ucd)
 expect_equal(vot_multi$UCD[1], "meta.id;meta.main")
+
+# --- Table-level metadata (meta_tab) round-trip ---
+
+# VOTable_to_MAML: meta_tab string is placed in MAML $description
+votable_desc = "A catalogue of bright stars from the survey."
+maml_with_desc = VOTable_to_MAML(votable_meta, meta_tab = votable_desc, MAML_version = 1.0)
+expect_equal(maml_with_desc$description, votable_desc)
+
+# Without meta_tab, description retains the placeholder text (not NULL)
+maml_no_desc = VOTable_to_MAML(votable_meta, MAML_version = 1.0)
+expect_true(nchar(maml_no_desc$description) > 0)
+expect_false(maml_no_desc$description == votable_desc)
+
+# MAML_to_VOTable: description is attached as attr(result, 'meta_tab')
+rt_with_desc = MAML_to_VOTable(maml_with_desc)
+expect_equal(attr(rt_with_desc, 'meta_tab'), votable_desc)
+
+# When description is absent / NULL, meta_tab attribute is NULL
+maml_null_desc = maml_with_desc
+maml_null_desc$description = NULL
+rt_null_desc = MAML_to_VOTable(maml_null_desc)
+expect_null(attr(rt_null_desc, 'meta_tab'))
+
+# Full round-trip: VOTable → MAML (with meta_tab) → VOTable, description preserved
+maml_rt = VOTable_to_MAML(votable_meta, meta_tab = votable_desc)
+vot_rt  = MAML_to_VOTable(maml_rt)
+expect_equal(attr(vot_rt, 'meta_tab'), votable_desc)

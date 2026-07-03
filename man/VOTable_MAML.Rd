@@ -4,12 +4,15 @@
 \title{Convert Between VOTable Column Headers and MAML Fields}
 \description{
   \code{VOTable_to_MAML} converts a VOTable column-header data frame (as returned
-  by \code{read_VOTable} from the VOTableR package) into a MAML list or MAML-
+  by \code{read_VOTable} from the VOTableR package), and optionally the
+  accompanying table-level description string, into a MAML list or MAML-
   formatted string.
 
   \code{MAML_to_VOTable} converts the fields of a MAML list or MAML-formatted
   string into a VOTable column-header data frame suitable for passing to
-  \code{write_VOTable}.
+  \code{write_VOTable}.  The MAML table-level \code{description} is attached as
+  a \code{meta_tab} attribute on the returned data frame, matching the
+  convention used by \code{read_VOTable}.
 
   Both functions handle the data-type vocabulary differences between the two
   formats, and map \code{array_size} (string max-length) and \code{col_size}
@@ -17,7 +20,7 @@
   attribute.
 }
 \usage{
-VOTable_to_MAML(meta_col, MAML_version = 1.0, output = 'list', ...)
+VOTable_to_MAML(meta_col, meta_tab = NULL, MAML_version = 1.0, output = 'list', ...)
 
 MAML_to_VOTable(MAML, ...)
 }
@@ -28,6 +31,13 @@ meta_col_read = TRUE)}.  Expected columns (case-insensitive): \code{Name},
 \code{Unit}, \code{Description}, \code{UCD}, \code{Datatype},
 \code{Arraysize}.  Any column that is absent will be silently filled with
 \code{NA} in the corresponding MAML field.
+}
+  \item{meta_tab}{
+Character scalar or \code{NULL} (default); optional table-level description
+string, as returned in \code{attr(table, 'meta_tab')} by
+\code{read_VOTable(..., meta_tab_read = TRUE)}.  When provided, this string
+is placed in the MAML \code{description} field, replacing the default
+placeholder text.
 }
   \item{MAML_version}{
 Numeric scalar; which MAML version to target (1.0, 1.1, or 1.2).  When
@@ -50,6 +60,19 @@ Additional named arguments passed to the top-level MAML list (for
 }
 }
 \details{
+\strong{Table-level metadata}
+
+VOTableR stores the \code{TABLE/DESCRIPTION} XML text in
+\code{attr(table, 'meta_tab')} after calling \code{read_VOTable}.  Pass this
+string as the \code{meta_tab} argument to \code{VOTable_to_MAML} and it will
+be placed in the MAML \code{description} field.
+
+In the reverse direction, \code{MAML_to_VOTable} reads the MAML
+\code{description} field and attaches it as \code{attr(result, 'meta_tab')} on
+the returned data frame.  This lets you feed the result directly to
+\code{write_VOTable}, which reads its table description from
+\code{attr(table, 'meta_tab')}.
+
 \strong{Data-type mapping}
 
 The two formats use different type vocabularies.  The mapping applied is:
@@ -100,7 +123,8 @@ direction.
 \code{MAML_to_VOTable}: a data frame with columns \code{Name},
 \code{Unit}, \code{Description}, \code{UCD}, \code{Datatype},
 \code{Arraysize}.  Rows correspond one-to-one to the MAML \code{fields}
-entries.
+entries.  The MAML table-level \code{description} is attached as
+\code{attr(result, 'meta_tab')}.
 }
 \author{
 Aaron Robotham
@@ -120,13 +144,20 @@ meta_col = data.frame(
   stringsAsFactors = FALSE
 )
 
-# Convert to MAML (list)
-maml_list = VOTable_to_MAML(meta_col, MAML_version = 1.0)
+# Table-level description (as returned by read_VOTable as attr(table, 'meta_tab'))
+meta_tab = "Example catalogue of astronomical sources."
+
+# Convert to MAML (list), passing the table description
+maml_list = VOTable_to_MAML(meta_col, meta_tab = meta_tab, MAML_version = 1.0)
+stopifnot(maml_list$description == meta_tab)
 str(maml_list$fields)
 
 # Convert back to VOTable header
 meta_col2 = MAML_to_VOTable(maml_list)
 print(meta_col2)
+
+# Table description is preserved as meta_tab attribute
+stopifnot(attr(meta_col2, 'meta_tab') == meta_tab)
 
 # Round-trip check: field names and types are preserved
 stopifnot(identical(meta_col$Name,     meta_col2$Name))

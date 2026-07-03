@@ -43,7 +43,7 @@
   )
 }
 
-VOTable_to_MAML = function(meta_col, MAML_version = 1.0, output = 'list', ...) {
+VOTable_to_MAML = function(meta_col, meta_tab = NULL, MAML_version = 1.0, output = 'list', ...) {
   i = NULL
 
   if (!is.data.frame(meta_col)) {
@@ -113,6 +113,13 @@ VOTable_to_MAML = function(meta_col, MAML_version = 1.0, output = 'list', ...) {
     field
   }
 
+  # Table-level description: use meta_tab when provided, otherwise keep placeholder
+  tab_description = if (!is.null(meta_tab) && nchar(meta_tab) > 0) {
+    as.character(meta_tab)
+  } else {
+    "Recommended short description of the table"
+  }
+
   MAML = list(
     survey      = "Optional survey name",
     dataset     = "Recommended dataset name",
@@ -124,7 +131,7 @@ VOTable_to_MAML = function(meta_col, MAML_version = 1.0, output = 'list', ...) {
     DOIs        = list(list(DOI = 'Valid DOI', type = 'DOI type')),
     depends     = list(list(survey = 'Dependent survey', dataset = 'Dependent dataset',
                             table = 'Dependent table', version = 'Dependent table version')),
-    description = "Recommended short description of the table",
+    description = tab_description,
     comments    = list("Optional comment or interesting fact", "..."),
     license     = "Recommended license for the dataset / table",
     keywords    = list("Optional keyword tag", "..."),
@@ -207,5 +214,15 @@ MAML_to_VOTable = function(MAML, ...) {
   }
 
   meta_col = do.call(rbind, rows)
+
+  # Attach table-level description as meta_tab attribute, matching the convention
+  # used by VOTableR's read_VOTable (which stores it as attr(table, 'meta_tab'))
+  meta_tab = if (!is.null(MAML$description) && nchar(MAML$description) > 0) {
+    as.character(MAML$description)
+  } else {
+    NULL
+  }
+  attr(meta_col, 'meta_tab') = meta_tab
+
   return(meta_col)
 }
