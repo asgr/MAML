@@ -81,3 +81,82 @@ maml_veccol3 = make_MAML(test_vec_dt2, MAML_version=1.2, vec_col=c('test', 'othe
 
 # Check if the MAML passes the current validator
 expect_true(validate_MAML(maml_veccol3, MAML_version = 1.2))
+
+# -----------------------------------------------------------------------
+# VOTable_to_MAML / MAML_to_VOTable round-trip tests
+# -----------------------------------------------------------------------
+
+# Build a minimal VOTable meta_col data frame (scalar columns only)
+votable_meta = data.frame(
+  Name        = c("ID", "RA", "Dec", "Mag", "SpType"),
+  Unit        = c(NA,   "deg", "deg", "mag", NA),
+  Description = c("Row ID", "Right Ascension", "Declination", "Magnitude", "Spectral type"),
+  UCD         = c(NA, "pos.eq.ra", "pos.eq.dec", "phot.mag", NA),
+  Datatype    = c("int", "double", "double", "float", "char"),
+  Arraysize   = c(NA, NA, NA, NA, "10"),
+  stringsAsFactors = FALSE
+)
+
+# --- MAML v1.0 round-trip ---
+maml10_list = VOTable_to_MAML(votable_meta, MAML_version = 1.0)
+expect_equal(length(maml10_list$fields), nrow(votable_meta))
+expect_equal(maml10_list$MAML_version, 1.0)
+
+rt10 = MAML_to_VOTable(maml10_list)
+expect_equal(rt10$Name,     votable_meta$Name)
+expect_equal(rt10$Datatype, votable_meta$Datatype)
+expect_equal(rt10$Unit,     votable_meta$Unit)
+expect_equal(rt10$UCD,      votable_meta$UCD)
+# array_size for the char column should round-trip as "10"
+expect_equal(rt10$Arraysize[rt10$Name == "SpType"], "10")
+
+# --- MAML v1.1 round-trip (same field structure as v1.0) ---
+maml11_list = VOTable_to_MAML(votable_meta, MAML_version = 1.1)
+expect_equal(maml11_list$MAML_version, 1.1)
+
+rt11 = MAML_to_VOTable(maml11_list)
+expect_equal(rt11$Name,     votable_meta$Name)
+expect_equal(rt11$Datatype, votable_meta$Datatype)
+
+# --- MAML v1.2 round-trip with a vector column ---
+votable_vec = data.frame(
+  Name        = c("ID", "flux", "label"),
+  Unit        = c(NA,   "Jy",   NA),
+  Description = c("Identifier", "Flux vector", "Source label"),
+  UCD         = c(NA, "phot.flux", NA),
+  Datatype    = c("int", "float", "char"),
+  Arraysize   = c(NA, "5", "20"),
+  stringsAsFactors = FALSE
+)
+
+maml12_list = VOTable_to_MAML(votable_vec, MAML_version = 1.2)
+# numeric arraysize on non-string column → col_size
+expect_equal(maml12_list$fields[[2]]$col_size, 5L)
+# char arraysize → array_size, not col_size
+expect_null(maml12_list$fields[[3]]$col_size)
+expect_equal(maml12_list$fields[[3]]$array_size, 20L)
+
+rt12 = MAML_to_VOTable(maml12_list)
+expect_equal(rt12$Name,     votable_vec$Name)
+expect_equal(rt12$Datatype, votable_vec$Datatype)
+# col_size=5 should come back as Arraysize="5"
+expect_equal(rt12$Arraysize[rt12$Name == "flux"],  "5")
+expect_equal(rt12$Arraysize[rt12$Name == "label"], "20")
+
+# --- MAML list → VOTable → MAML list round-trip ---
+maml_from_example = read_MAML(
+  system.file('extdata', 'example_lookup_datamap.maml', package = "MAML"),
+  output = 'list'
+)
+vot_from_maml = MAML_to_VOTable(maml_from_example)
+expect_equal(nrow(vot_from_maml), length(maml_from_example$fields))
+# Field names are preserved
+expect_equal(vot_from_maml$Name,
+             vapply(maml_from_example$fields, `[[`, character(1), 'name'))
+
+# --- UCD semicolon-collapse in MAML_to_VOTable ---
+maml_multi_ucd = maml_from_example
+# Inject a two-element UCD vector into the first field
+maml_multi_ucd$fields[[1]]$ucd = c("meta.id", "meta.main")
+vot_multi = MAML_to_VOTable(maml_multi_ucd)
+expect_equal(vot_multi$UCD[1], "meta.id;meta.main")
