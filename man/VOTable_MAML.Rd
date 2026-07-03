@@ -26,7 +26,8 @@ MAML_to_VOTable(MAML, ...)
 Data frame; the per-column metadata returned by \code{read_VOTable(...,
 meta_col_read = TRUE)}.  Expected columns (case-insensitive): \code{Name},
 \code{Unit}, \code{Description}, \code{UCD}, \code{Datatype},
-\code{Arraysize}.
+\code{Arraysize}.  Any column that is absent will be silently filled with
+\code{NA} in the corresponding MAML field.
 }
   \item{MAML_version}{
 Numeric scalar; which MAML version to target (1.0, 1.1, or 1.2).  When
@@ -84,6 +85,11 @@ direction.
   \item For MAML v1.0 and v1.1 the \code{col_size} field does not exist;
     vector-column information carried in a numeric VOTable \code{arraysize} is
     therefore silently dropped on that conversion path.
+
+  \item A \code{col_size} of exactly 1 is treated as a scalar column and is
+    \emph{not} written to the VOTable \code{Arraysize} attribute.  In VOTable,
+    omitting \code{arraysize} already implies a single value, so the two
+    representations are semantically equivalent.
 }
 }
 \value{

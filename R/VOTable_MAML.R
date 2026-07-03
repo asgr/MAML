@@ -188,6 +188,8 @@ MAML_to_VOTable = function(MAML, ...) {
 
     if (maml_version >= 1.2 && !is.null(i$col_size)) {
       col_sz = suppressWarnings(as.integer(i$col_size))
+      # col_size=1 means a scalar column; only write Arraysize when the
+      # column is genuinely multi-element (col_size > 1).
       if (!is.na(col_sz) && col_sz > 1L) {
         arraysize_val = col_sz
       }
